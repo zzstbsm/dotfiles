@@ -1,0 +1,129 @@
+# ~/.config/starship.toml
+
+add_newline = false
+command_timeout = 1000
+format = """
+[░▒▓](#a3aed2)\
+$os\
+[ ](bg:#769ff0 fg:#a3aed2)\
+$username$hostname\
+[ ](bg:#394260 fg:#769ff0)\
+$directory\
+[ ](bg:#212736 fg:#394260)\
+$kubernetes\
+[ ](bg:#212736 fg:#212736)\
+$git_branch\
+[ ](bg:#1d2230 fg:#212736)\
+$time\
+[ ](fg:#1d2230)\
+\n\
+$git_status\
+\n\
+$character
+"""
+
+# Drop ugly default prompt characters
+#[character]
+#success_symbol = ''
+#error_symbol = ''
+
+# ---
+
+[os]
+format = '[$symbol](bg:#a3aed2 fg:#090c0c)' 
+disabled = false
+
+[os.symbols]
+Windows = '  '
+Arch = ' 󰣇 '
+Ubuntu = '  '
+Macos = ' 󰀵 '
+
+# ---y
+
+# Shows the username
+[username]
+#style_user = 'white bold'
+#style_root = 'black bold'
+style_user = 'bg:#769ff0 fg:#e3e5e5'
+style_root = 'bg:#769ff0 fg:#e3e5d5'
+format = '[$user]($style)'
+disabled = false
+show_always = true
+
+# Shows the hostname
+[hostname]
+ssh_only = true 
+style = 'bg:#769ff0 fg:#e3e5e5'
+format = '[:$hostname]($style)'
+#format = '[$hostname](bold yellow) '
+disabled = false
+
+# Shows current directory
+[directory]
+style = 'bg:#394260 fg:#e3e5e5'
+truncation_length =  2  
+truncation_symbol = '…/'
+home_symbol = '󰋜 ~'
+read_only_style = '197'
+read_only = '  '
+format = '[$path]($style)[$read_only]($read_only_style)'
+
+[time]
+disabled = false
+time_format = "%R" # Hour:Minute Format
+style = "bg:#1d2230"
+format = '[[  $time ](fg:#a0a9cb bg:#1d2230)]($style)'
+
+# Shows current git branch
+[git_branch]
+symbol = ' '
+format = '[$symbol$branch ]($style)'
+# truncation_length = 4
+truncation_symbol = '…/'
+style = 'fg:#769ff0 bg:#212736'
+
+# Shows current git status
+[git_status]
+format = '[░▒▓](fg:#212736)[ Git status: $all_status$ahead_behind ]($style)[ ](fg:#212736)'
+style = 'fg:#769ff0 bg:#212736'
+conflicted = '[ confliced=${count} ](bg:#212736 fg:red)'
+up_to_date = '[󰘽 up-to-date ](bg:#212736 fg:green)'
+untracked = '[󰋗 untracked=${count} ](bg:#212736 fg:red)'
+ahead = ' ahead=${count}'
+diverged = ' ahead=${ahead_count}  behind=${behind_count}'
+behind = ' behind=${count}'
+stashed = '[ stashed=${count} ](bg:#212736 fg:green)'
+modified = '[󰛿 modified=${count} ](bg:#212736 fg:yellow)'
+staged = '[󰐗 staged=${count} ](bg:#212736 fg:green)'
+renamed = '[󱍸 renamed=${count} ](bg:#212736 fg:yellow)'
+deleted = '[󰍶 deleted=${count} ](bg:#212736 fg:red)'
+
+# Shows kubernetes context and namespace
+[kubernetes]
+style = 'bg:#212736 fg:#769ff0'
+format = '[ 󱃾 $context\($namespace\) ]($style)'
+disabled = false
+
+# ---
+
+[vagrant]
+disabled = true
+
+[docker_context]
+disabled = true
+
+[helm]
+disabled = true
+
+[python]
+disabled = true
+
+[nodejs]
+disabled = true
+
+[ruby]
+disabled = true
+
+[terraform]
+disabled = true
