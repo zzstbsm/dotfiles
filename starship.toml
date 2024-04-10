@@ -121,9 +121,9 @@ disabled = true
 disabled = true
 
 [python]
-format = "\n[░▒▓](fg:#394260)[ $symbol $virtualenv $version ]($style)[ ](fg:#394260)"
+format = "\n[░▒▓](fg:#394260)[ $symbol | $virtualenv | $version ]($style)[ ](fg:#394260)"
 style = "bg:#394260 fg:#769ff0"
-pyenv_version_name = true
+#pyenv_version_name = true
 disabled = false
 
 [nodejs]
