@@ -12,16 +12,19 @@ $username$hostname\
 $directory\
 [ ](bg:#212736 fg:#394260)\
 $kubernetes\
-[ ](bg:#212736 fg:#212736)\
-$git_branch\
 [ ](bg:#1d2230 fg:#212736)\
 $time\
 [ ](fg:#1d2230)\
-\n\
-$git_status\
+$git_branch[ ](bg:#212736 fg:#394260)$git_status\
+$python\
 \n\
 $character
 """
+#\n\
+#$git_status\
+#\n\
+#$character
+#"""
 
 # Drop ugly default prompt characters
 #[character]
@@ -79,14 +82,14 @@ format = '[[  $time ](fg:#a0a9cb bg:#1d2230)]($style)'
 # Shows current git branch
 [git_branch]
 symbol = ' '
-format = '[$symbol$branch ]($style)'
+format = "\n[░▒▓](fg:#394260)[ $symbol$branch ]($style)"
 # truncation_length = 4
 truncation_symbol = '…/'
-style = 'fg:#769ff0 bg:#212736'
+style = 'bg:#394260 fg:#e3e5e5'
 
 # Shows current git status
 [git_status]
-format = '[░▒▓](fg:#212736)[ Git status: $all_status$ahead_behind ]($style)[ ](fg:#212736)'
+format = "[ Git status: $all_status$ahead_behind ]($style)[ ](fg:#212736)"
 style = 'fg:#769ff0 bg:#212736'
 conflicted = '[ confliced=${count} ](bg:#212736 fg:red)'
 up_to_date = '[󰘽 up-to-date ](bg:#212736 fg:green)'
@@ -118,7 +121,7 @@ disabled = true
 disabled = true
 
 [python]
-disabled = true
+disabled = false 
 
 [nodejs]
 disabled = true
