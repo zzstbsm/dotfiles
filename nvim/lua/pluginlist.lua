@@ -25,22 +25,23 @@ return {
             'L3MON4D3/LuaSnip',                -- Code snippet support
             'saadparwaiz1/cmp_luasnip',        -- Snippet for configuration part
             'rafamadriz/friendly-snippets',    -- Snippet support for a variety of programming languages
-            
-            'hrsh7th/cmp-nvim-lsp', 
-            
-        },
-    },
+
+            'hrsh7th/cmp-nvim-lsp',    
+		},
+	},
 
 	-- Telescope plugin
     { 
-        'nvim-telescope/telescope.nvim',
-        dependencies = { 'nvim-lua/plenary.nvim' } 
+		'nvim-telescope/telescope.nvim',
+		tag = '0.1.6',
+		branch = '0.1.x',
+		dependencies = { 'nvim-lua/plenary.nvim' }
     },
     {
-        'nvim-telescope/telescope-fzf-native.nvim',
-        build = 'make',
+		'nvim-telescope/telescope-fzf-native.nvim',
+		build = 'make',
     },
-    
+   
 	-- Treesitter
     {
         'nvim-treesitter/nvim-treesitter',
