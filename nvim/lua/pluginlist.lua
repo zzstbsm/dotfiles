@@ -8,6 +8,22 @@ return {
 			vim.cmd("colorscheme tokyonight-storm")
 		end
     },
+    
+	-- Icons plugin
+	{
+        'nvim-lualine/lualine.nvim',
+        dependencies = {
+            "nvim-tree/nvim-web-devicons"
+        },
+        config = function()
+            require("lualine").setup(
+	    		{
+                    icons_enabled = true,
+                    theme = 'tokoynight',
+                }
+			)
+        end,
+    },
 
 
 	-- LSP plugin configuration
@@ -17,18 +33,29 @@ return {
 
     -- Neovim namespace for code completion in the setup
 	"folke/neodev.nvim",
+	"simrat39/rust-tools.nvim",
 
 	-- Code completion
     {
-        'hrsh7th/nvim-cmp',
+        'hrsh7th/nvim-cmp',						-- Nvim completion framework
         dependencies = {
-            'L3MON4D3/LuaSnip',                -- Code snippet support
-            'saadparwaiz1/cmp_luasnip',        -- Snippet for configuration part
-            'rafamadriz/friendly-snippets',    -- Snippet support for a variety of programming languages
+            'L3MON4D3/LuaSnip',                	-- Code snippet support
+            'saadparwaiz1/cmp_luasnip',        	-- Snippet for configuration part
+            'rafamadriz/friendly-snippets',    	-- Snippet support for a variety of programming languages
+			
+			'hrsh7th/cmp-nvim-lua',
+			'hrsh7th/cmp-nvim-lsp-signature-help',
+			'hrsh7th/cmp-vsnip',
+			'hrsh7th/cmp-path',
+			'hrsh7th/cmp-buffer',
+			'hrsh7th/vim-vsnip',
 
-            'hrsh7th/cmp-nvim-lsp',    
+            'hrsh7th/cmp-nvim-lsp',				-- Nvim completion source
 		},
 	},
+	
+	-- Debugger
+	"puremourning/vimspector",
 
 	-- Telescope plugin
     { 
@@ -47,21 +74,5 @@ return {
         'nvim-treesitter/nvim-treesitter',
         build = ':TSUpdate',
     },
-
-    -- Icons plugin
-    {
-        'nvim-lualine/lualine.nvim',
-        dependencies = {
-            "nvim-tree/nvim-web-devicons"
-        },
-        config = function()
-            require("lualine").setup(
-	    		{
-                    icons_enabled = true,
-                    theme = 'tokoynight',
-                }
-			)
-        end,
-    }
 
 }
