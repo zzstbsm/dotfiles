@@ -86,4 +86,7 @@ return {
 	
 	-- Harpoon
 	'theprimeagen/harpoon',
+
+	-- UndoTree
+	'mbbill/undotree',
 }
