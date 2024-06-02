@@ -67,11 +67,11 @@ local function on_attach(bufnr)
 	end
 
 	-- on_attach
-	vim.keymap.set("n", "l", edit_or_open, {})
-	vim.keymap.set("n", "L", vsplit_preview, {})
-	vim.keymap.set("n", "h", api.tree.close, {})
-	vim.keymap.set("n", "H", api.tree.collapse_all, {})
-	vim.keymap.set("n", "ga", git_add, {})
+	vim.keymap.set("n", "l", edit_or_open, opts("Edit Or Open"))
+	vim.keymap.set("n", "L", vsplit_preview, opts("Vsplit Preview"))
+	vim.keymap.set("n", "h", api.tree.close, opts("Close"))
+	vim.keymap.set("n", "H", api.tree.collapse_all, opts("Collapse All"))
+	vim.keymap.set("n", "ga", git_add, opts('Git Add'))
 
 end 
 
@@ -103,12 +103,12 @@ end
 
 
 -- Setup apply setup
-require('nvim-tree').setup {
+require('nvim-tree').setup({
 	on_attach = on_attach,
 	sort_by = function(nodes)
 		table.sort(nodes, natural_cmp)
 	end,
-}
+})
 
 -- Global Keymap
 vim.api.nvim_set_keymap('n', '<C-b>', ':NvimTreeToggle<cr>', { silent = true, noremap = true } )
