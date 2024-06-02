@@ -1,2 +1,3 @@
-require "options"
-require "plugins"
+require("keyremap")
+require("settings")
+require("plugins")
