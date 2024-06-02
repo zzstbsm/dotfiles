@@ -8,7 +8,15 @@ return {
 			vim.cmd("colorscheme tokyonight-storm")
 		end
     },
-    
+	-- Tree view
+    {
+    	'nvim-tree/nvim-tree.lua',
+    	version = '*',
+    	lazy = false,
+    	dependencies = {
+    		"nvim-tree/nvim-web-devicons",
+    	},
+   },
 	-- Icons plugin
 	{
         'nvim-lualine/lualine.nvim',
@@ -69,7 +77,7 @@ return {
 		build = 'make',
     },
    
-	-- Treesitter
+	-- Treesitter: Highlighting
     {
         'nvim-treesitter/nvim-treesitter',
         build = ':TSUpdate',
