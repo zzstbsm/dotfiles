@@ -89,4 +89,8 @@ return {
 
 	-- UndoTree
 	'mbbill/undotree',
+
+	-- Git tool
+	'tpope/vim-fugitive',
+
 }
