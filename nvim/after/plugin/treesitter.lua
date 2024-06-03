@@ -1,11 +1,21 @@
 require('nvim-treesitter.configs').setup {
-    ensure_installed = { 
-		'cpp', 
-		'lua', 
-		'rust', 
+    ensure_installed = {
+        'bash',
+        'c',
+		'cpp',
+        'diff',
+        'html',
+        'json',
+        'jsonc',
+		'lua',
+        'markdown',
+        'python',
+        'regex',
+		'rust',
 		'toml',
-		'vim', 
-		'vimdoc', 
+		'vim',
+		'vimdoc',
+        'yaml',
 	},
 
     auto_install = true,
