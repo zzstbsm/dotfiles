@@ -92,6 +92,6 @@ return {
 
 	-- Git tool
 	'tpope/vim-fugitive',
+    'rhysd/git-messenger.vim',
     'f-person/git-blame.nvim',
-
 }
