@@ -62,6 +62,12 @@ return {
 		},
 	},
 	
+    -- Commenter
+    {
+        'numToStr/Comment.nvim',
+        lazy = false,
+    },
+
 	-- Debugger
 	"puremourning/vimspector",
 
