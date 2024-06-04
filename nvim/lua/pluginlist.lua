@@ -107,4 +107,7 @@ return {
     'rhysd/git-messenger.vim',
     'f-person/git-blame.nvim',
     'sindrets/diffview.nvim',
+
+    -- Floating terminal
+    'voldikss/vim-floaterm',
 }
