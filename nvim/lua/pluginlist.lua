@@ -92,5 +92,6 @@ return {
 
 	-- Git tool
 	'tpope/vim-fugitive',
+    'f-person/git-blame.nvim',
 
 }
