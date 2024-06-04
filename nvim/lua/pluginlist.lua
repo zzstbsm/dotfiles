@@ -16,7 +16,7 @@ return {
     	dependencies = {
     		"nvim-tree/nvim-web-devicons",
     	},
-   },
+    },
 	-- Icons plugin
 	{
         'nvim-lualine/lualine.nvim',
@@ -68,6 +68,12 @@ return {
         lazy = false,
     },
 
+    -- Indentation lines
+    {
+        "lukas-reineke/indent-blankline.nvim",
+        main = "ibl",
+    },
+
 	-- Debugger
 	"puremourning/vimspector",
 
@@ -82,7 +88,7 @@ return {
 		'nvim-telescope/telescope-fzf-native.nvim',
 		build = 'make',
     },
-   
+
 	-- Treesitter: Highlighting
     {
         'nvim-treesitter/nvim-treesitter',
@@ -100,4 +106,5 @@ return {
 	'tpope/vim-fugitive',
     'rhysd/git-messenger.vim',
     'f-person/git-blame.nvim',
+    'sindrets/diffview.nvim',
 }
