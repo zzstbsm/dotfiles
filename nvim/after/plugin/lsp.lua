@@ -5,7 +5,7 @@ local on_attach = function(_, bufnr)
     end
 
     bufmap('<leader>r', vim.lsp.buf.rename)
-    bufmap('<leader>a', vim.lsp.buf.code_action)
+    bufmap('<leader>A', vim.lsp.buf.code_action)
 
     bufmap('gd', vim.lsp.buf.definition)
     bufmap('gD', vim.lsp.buf.declaration)
@@ -26,18 +26,29 @@ end
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
--- no mason
--- require('lspconfig').lua_ls.setup {
---     on_attach = on_attach,
---     capabilities = capabilities,
---     Lua = {
---       workspace = { checkThirdParty = false },
---       telemetry = { enable = false },
---     },
--- }
+require('mason').setup()
 
--- mason
-require("mason").setup()
+require('mason-lspconfig').setup{
+    ensure_installed = {
+        'clangd',                               -- C/C++
+        'cmake',                                -- CMake
+        'cssls',                                -- CSS
+        'dockerls',                             -- Docker
+        'docker_compose_language_service',      -- Docker compose
+        'fortls',                               -- Fortran
+        'gradle_ls',                            -- Gradle
+        'html',                                 -- Html
+        'helm_ls',                              -- Help
+        'kotlin_language_server',               -- Kotlin
+        'lua_ls',                               -- Lua
+        'prosemd_lsp',                          -- Markdown
+        'pylsp',                                -- Python
+        'rust_analyzer',                        -- rust
+        'taplo',                                -- TOML
+        'texlab',                               -- LaTeX
+        'hydra_lsp',                            -- YAML
+    }
+}
 require("mason-lspconfig").setup_handlers(
 	{
 	    function(server_name)
@@ -46,7 +57,7 @@ require("mason-lspconfig").setup_handlers(
 	            capabilities = capabilities
 	        }
 	    end,
-	
+
 	    ["lua_ls"] = function()
 	        require('neodev').setup()
 	        require('lspconfig').lua_ls.setup {
@@ -60,20 +71,21 @@ require("mason-lspconfig").setup_handlers(
 	            }
 	        }
 	    end,
-		
 		["rust_analyzer"] = function()
-			require("rust-tools").setup {}
+			require("rust-tools").setup({
+                server = {
+                    on_attach = on_attach,
+                    capabilities = capabilities,
+                },
+            })
 		end,
-    -- ["omnisharp"] = function()
-    --     require('lspconfig').omnisharp.setup {
-    --         filetypes = { "cs", "vb" },
-    --         root_dir = require('lspconfig').util.root_pattern("*.csproj", "*.sln"),
-    --         on_attach = on_attach,
-    --         capabilities = capabilities,
-    --         enable_roslyn_analyzers = true,
-    --         analyze_open_documents_only = true,
-    --         enable_import_completion = true,
-    --     }
-    -- end,
-    }
+
+        -- The default settings in function(server_name) can be ovveridden if
+        -- something as follows is defined
+        --
+        -- ["lsp_server_name"] = function()
+        --     require('new_lsp_server_name').setup()
+        -- end,
+
+   }
 )

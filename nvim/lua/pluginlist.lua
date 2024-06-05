@@ -39,6 +39,22 @@ return {
     "williamboman/mason-lspconfig.nvim",
     "neovim/nvim-lspconfig",
 
+    -- Debugger Adapter Protocol
+    "mfussenegger/nvim-dap",
+    {
+        "rcarriga/nvim-dap-ui",
+        dependencies = {
+            "mfussenegger/nvim-dap",
+            "nvim-neotest/nvim-nio"
+        }
+    },
+
+    -- Linter
+    "mfussenegger/nvim-lint",
+
+    -- Formatter
+    "mhartington/formatter.nvim",
+
     -- Neovim namespace for code completion in the setup
 	"folke/neodev.nvim",
 	"simrat39/rust-tools.nvim",
@@ -50,7 +66,7 @@ return {
             'L3MON4D3/LuaSnip',                	-- Code snippet support
             'saadparwaiz1/cmp_luasnip',        	-- Snippet for configuration part
             'rafamadriz/friendly-snippets',    	-- Snippet support for a variety of programming languages
-			
+
 			'hrsh7th/cmp-nvim-lua',
 			'hrsh7th/cmp-nvim-lsp-signature-help',
 			'hrsh7th/cmp-vsnip',
@@ -61,7 +77,7 @@ return {
             'hrsh7th/cmp-nvim-lsp',				-- Nvim completion source
 		},
 	},
-	
+
     -- Commenter
     {
         'numToStr/Comment.nvim',
@@ -78,7 +94,7 @@ return {
 	"puremourning/vimspector",
 
 	-- Telescope plugin
-    { 
+    {
 		'nvim-telescope/telescope.nvim',
 		tag = '0.1.6',
 		branch = '0.1.x',
@@ -95,8 +111,8 @@ return {
         build = ':TSUpdate',
     },
 	'nvim-treesitter/playground',
-	
-	-- Harpoon
+
+    -- Harpoon
 	'theprimeagen/harpoon',
 
 	-- UndoTree
@@ -110,4 +126,7 @@ return {
 
     -- Floating terminal
     'voldikss/vim-floaterm',
+
+    -- Surround strings with markers
+    'tpope/vim-surround',
 }
