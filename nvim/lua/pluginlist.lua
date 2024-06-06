@@ -129,4 +129,11 @@ return {
 
     -- Surround strings with markers
     'tpope/vim-surround',
+
+    -- Autoclose brackets
+    {
+        'windwp/nvim-autopairs',
+        event = "InsertEnter",
+        config = true
+    },
 }
