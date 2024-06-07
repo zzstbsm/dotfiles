@@ -10,6 +10,7 @@ local on_attach = function(_, bufnr)
     bufmap('gd', vim.lsp.buf.definition)
     bufmap('gD', vim.lsp.buf.declaration)
     bufmap('gI', vim.lsp.buf.implementation)
+    bufmap('gR', vim.lsp.buf.rename)
     bufmap('<leader>D', vim.lsp.buf.type_definition)
 
     bufmap('gr', require('telescope.builtin').lsp_references)
