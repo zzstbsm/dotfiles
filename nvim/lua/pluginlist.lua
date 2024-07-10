@@ -144,4 +144,15 @@ return {
         ft = { "markdown" },
         build = function() vim.fn["mkdp#util#install"]() end,
     },
+
+    -- Live server for frontend developement
+    {
+        "aurum77/live-server.nvim",
+        cmd = {
+            "LiverServer", "LiverServerStart", "LiveServerStop"
+        },
+        config = function()
+            require("live_server.util").install()
+        end,
+    },
 }
