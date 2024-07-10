@@ -39,7 +39,7 @@ require('mason-lspconfig').setup{
         'fortls',                               -- Fortran
         'gradle_ls',                            -- Gradle
         'html',                                 -- Html
-        'helm_ls',                              -- Help
+        'helm_ls',                              -- Helm
         'kotlin_language_server',               -- Kotlin
         'lua_ls',                               -- Lua
         'prosemd_lsp',                          -- Markdown
@@ -47,7 +47,8 @@ require('mason-lspconfig').setup{
         'rust_analyzer',                        -- rust
         'taplo',                                -- TOML
         'texlab',                               -- LaTeX
-        'hydra_lsp',                            -- YAML
+        'yamlls',                               -- YAML
+
     }
 }
 require("mason-lspconfig").setup_handlers(
@@ -81,6 +82,31 @@ require("mason-lspconfig").setup_handlers(
             })
 		end,
 
+        ["yamlls"] = function()
+            require("lspconfig").yamlls.setup {
+                on_attach = on_attach,
+                filetypes = { 'yaml', 'yml' },
+                settings = {
+                    yaml = {
+                        format = {
+                            enable = true
+                        },
+                        hover = true,
+                        completion = true,
+                        validate = true,
+                        schemas = {
+                            kubernetes = "*.yaml",
+                            ["http://json.schemastore.org/kustomization"] = "kustomization.{yml,yaml}",
+                        },
+                        schemaStore = {
+                            enable = true,
+                            url = "https://www.schemastore.org/api/json/catalog.json",
+                        }
+                    }
+                },
+                capabilities = capabilities,
+            }
+        end,
         -- The default settings in function(server_name) can be ovveridden if
         -- something as follows is defined
         --
