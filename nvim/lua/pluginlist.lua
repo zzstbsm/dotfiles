@@ -122,6 +122,7 @@ return {
 	'tpope/vim-fugitive',
     'rhysd/git-messenger.vim',
     'f-person/git-blame.nvim',
+    'lewis6991/gitsigns.nvim',
     'sindrets/diffview.nvim',
 
     -- Floating terminal
