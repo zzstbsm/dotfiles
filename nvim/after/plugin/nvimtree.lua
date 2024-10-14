@@ -66,13 +66,43 @@ local function on_attach(bufnr)
         api.tree.reload()
     end
 
+    -- Resize view
+    local nvim_tree_width_default = 30
+    local nvim_tree_width = nvim_tree_width_default
+    local view_size_set_default = function()
+       nvim_tree_width = nvim_tree_width_default
+       vim.cmd.NvimTreeResize(nvim_tree_width)
+    end
+
+    local function change_view_size(offset)
+        nvim_tree_width = nvim_tree_width + offset
+
+        if nvim_tree_width <= 0 then
+            view_size_set_default()
+            api.tree.close()
+            return
+        end
+
+        vim.cmd.NvimTreeResize(nvim_tree_width)
+    end
+
+    local view_size_increase = function()
+        change_view_size(10)
+    end
+    local view_size_decrease = function()
+        change_view_size(-10)
+    end
+
     -- on_attach
     vim.keymap.set("n", "l", edit_or_open, opts("Edit Or Open"))
     vim.keymap.set("n", "L", vsplit_preview, opts("Vsplit Preview"))
     vim.keymap.set("n", "h", api.tree.close, opts("Close"))
     vim.keymap.set("n", "H", api.tree.collapse_all, opts("Collapse All"))
-    vim.keymap.set("n", "ga", git_add, opts('Git Add'))
-
+    vim.keymap.set("n", "ga", git_add, opts("Git Add"))
+    vim.keymap.set("n", "gr", api.git.reload, opts("Update git status"))
+    vim.keymap.set("n", "<C-h>", view_size_decrease, opts("Decrease view"))
+    vim.keymap.set("n", "<C-l>", view_size_increase, opts("Increase view"))
+    vim.keymap.set("n", "<leader>d", view_size_set_default, opts("Set default view size"))
 end
 
 -- Setup sorting
