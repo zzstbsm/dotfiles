@@ -43,7 +43,8 @@ require('mason-lspconfig').setup{
         'kotlin_language_server',               -- Kotlin
         'lua_ls',                               -- Lua
         'prosemd_lsp',                          -- Markdown
-        'pylsp',                                -- Python
+        -- 'pylsp',                                -- Python
+        'pyright',                                -- Python
         'rust_analyzer',                        -- rust
         'taplo',                                -- TOML
         'texlab',                               -- LaTeX
@@ -109,6 +110,28 @@ require("mason-lspconfig").setup_handlers(
                 capabilities = capabilities,
             }
         end,
+
+        -- ["pylsp"] = function()
+        --     require("lspconfig").pylsp.setup {
+        --         on_attach = on_attach,
+        --         capabilities = capabilities,
+        --         cmd = { "pylsp" },
+        --         settings = {
+        --             pylsp = {
+        --                 plugins = {
+        --                     pylint = { enabled = true },
+        --                     rope_autoimport = {
+        --                         code_actions = { enabled = false },
+        --                         completions = { enabled = false }
+        --                     }
+        --                 }
+        --             }
+        --         }
+        --     }
+        -- end
+        --
+        --
+        --
         -- The default settings in function(server_name) can be ovveridden if
         -- something as follows is defined
         --
