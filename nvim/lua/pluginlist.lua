@@ -78,6 +78,9 @@ return {
 		},
 	},
 
+    -- Auto close tag for frontend dev
+    "windwp/nvim-ts-autotag",
+
     -- Commenter
     {
         'numToStr/Comment.nvim',
@@ -156,4 +159,11 @@ return {
             require("live_server.util").install()
         end,
     },
+
+    -- Prettier for js
+    'prettier/vim-prettier',
+
+    -- VimBeGood Game
+    'ThePrimeagen/vim-be-good'
+
 }

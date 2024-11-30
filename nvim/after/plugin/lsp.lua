@@ -37,6 +37,7 @@ require('mason-lspconfig').setup{
         'dockerls',                             -- Docker
         'docker_compose_language_service',      -- Docker compose
         'fortls',                               -- Fortran
+        'gopls',                                -- Go
         'gradle_ls',                            -- Gradle
         'html',                                 -- Html
         'helm_ls',                              -- Helm

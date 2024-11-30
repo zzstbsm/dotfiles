@@ -3,8 +3,11 @@ require('nvim-treesitter.configs').setup {
         'bash',
         'c',
 		'cpp',
+        'css',
         'diff',
+        'go',
         'html',
+        'javascript',
         'json',
         'jsonc',
 		'lua',
@@ -13,6 +16,7 @@ require('nvim-treesitter.configs').setup {
         'regex',
 		'rust',
 		'toml',
+        'typescript',
 		'vim',
 		'vimdoc',
         'yaml',
@@ -23,7 +27,7 @@ require('nvim-treesitter.configs').setup {
     highlight = { enable = true },
 
     indent = { enable = true },
-	
+
 	rainbow = {
 		enable = true,
 		extended_mode = true,
