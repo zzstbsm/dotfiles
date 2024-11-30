@@ -61,11 +61,22 @@ return {
 
 	-- Code completion
     {
-        'hrsh7th/nvim-cmp',						-- Nvim completion framework
+		-- Nvim completion framework
+        'hrsh7th/nvim-cmp',
         dependencies = {
-            'L3MON4D3/LuaSnip',                	-- Code snippet support
-            'saadparwaiz1/cmp_luasnip',        	-- Snippet for configuration part
-            'rafamadriz/friendly-snippets',    	-- Snippet support for a variety of programming languages
+            {
+                -- Code snippet support
+                'L3MON4D3/LuaSnip',
+	            run = "make install_jsregexp",
+                dependencies = {
+                    -- Snippet support for a variety of programming languages
+                    'rafamadriz/friendly-snippets',
+
+                    'nvim-treesitter/nvim-treesitter',
+                }
+            },
+            -- Snippet for configuration part
+            'saadparwaiz1/cmp_luasnip',
 
 			'hrsh7th/cmp-nvim-lua',
 			'hrsh7th/cmp-nvim-lsp-signature-help',
@@ -73,8 +84,8 @@ return {
 			'hrsh7th/cmp-path',
 			'hrsh7th/cmp-buffer',
 			'hrsh7th/vim-vsnip',
-
-            'hrsh7th/cmp-nvim-lsp',				-- Nvim completion source
+            -- Nvim completion source
+            'hrsh7th/cmp-nvim-lsp',
 		},
 	},
 
@@ -109,10 +120,7 @@ return {
     },
 
 	-- Treesitter: Highlighting
-    {
-        'nvim-treesitter/nvim-treesitter',
-        build = ':TSUpdate',
-    },
+    'nvim-treesitter/nvim-treesitter',
 	'nvim-treesitter/playground',
 
     -- Harpoon

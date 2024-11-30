@@ -2,8 +2,17 @@ local cmp = require('cmp')
 local luasnip = require('luasnip')
 local cmp_autopairs = require('nvim-autopairs.completion.cmp')
 
-require('luasnip.loaders.from_vscode').lazy_load()
-luasnip.config.setup {}
+-- vscode format
+require("luasnip.loaders.from_vscode").lazy_load { exclude = vim.g.vscode_snippets_exclude or {} }
+require("luasnip.loaders.from_vscode").lazy_load { paths = vim.g.vscode_snippets_path or "" }
+
+-- snipmate format
+require("luasnip.loaders.from_snipmate").load()
+require("luasnip.loaders.from_snipmate").lazy_load { paths = vim.g.snipmate_snippets_path or "" }
+
+-- lua format
+require("luasnip.loaders.from_lua").load()
+require("luasnip.loaders.from_lua").lazy_load { paths = vim.g.lua_snippets_path or "" }
 
 cmp.setup {
     snippet = {
@@ -11,11 +20,21 @@ cmp.setup {
             luasnip.lsp_expand(args.body)
         end,
     },
+    completion = { completeopt = 'menu,menuone' },
     mapping = cmp.mapping.preset.insert {
+        -- Select the [n]ext item
         ['<C-n>'] = cmp.mapping.select_next_item(),
+        -- Select the [p]revious item
         ['<C-p>'] = cmp.mapping.select_prev_item(),
-        ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+
+        -- Scroll the documentation window [b]ack / [f]orward
+        ['<C-b>'] = cmp.mapping.scroll_docs(-4),
         ['<C-f>'] = cmp.mapping.scroll_docs(4),
+        -- Accept ([y]es) the completion.
+        --  This will auto-import if your LSP supports it.
+        --  This will expand snippets if the LSP sent a snippet.
+        ['<C-y>'] = cmp.mapping.confirm { select = true },
+
         ['<C-Space>'] = cmp.mapping.complete {},
         ['<CR>'] = cmp.mapping.confirm {
             behavior = cmp.ConfirmBehavior.Replace,
@@ -41,33 +60,33 @@ cmp.setup {
         end, { 'i', 's' }),
     },
     sources = cmp.config.sources({
-        -- { name = 'path' },                              -- file paths
+        -- { name = 'path', keyword_length = 2 },          -- file paths
 	    { name = 'nvim_lsp', keyword_length = 3 },      -- from language server
 	    { name = 'nvim_lsp_signature_help' },           -- display function signatures with current parameter emphasized
-	    { name = 'nvim_lua', keyword_length = 2},       -- complete neovim's Lua runtime API such vim.lsp.*
-	    { name = 'vsnip', keyword_length =2 },         -- nvim-cmp source for vim-vsnip 
-	    { name = 'calc'},
-	}, {
+	    { name = 'nvim_lua', keyword_length = 2 },      -- complete neovim's Lua runtime API such vim.lsp.*
+	    { name = 'vsnip', keyword_length = 2 },         -- nvim-cmp source for vim-vsnip 
+	    { name = 'calc' },
+        { name = 'luasnip', keyword_length = 1 },
 	    { name = 'buffer', keyword_length = 2 },        -- source current buffer
     }),
 	window = {
     	completion = cmp.config.window.bordered(),
         documentation = cmp.config.window.bordered(),
     },
-    -- formatting = {
-    --     fields = { 'menu', 'abbr', 'kind' },
-    --     format = function(entry, item)
-    --         local menu_icon ={
-    --             nvim_lsp = 'λ',
-    --             vsnip = '⋗',
-    --             buffer = 'Ω',
-    --             path = '🖫',
-    --         }
-    --         item.menu = menu_icon[entry.source.name]
-    --         return item
-    --     end,
-    --     expandable_indicator,
-    -- },
+    formatting = {
+        fields = { 'menu', 'abbr', 'kind' },
+        format = function(entry, item)
+            local menu_icon = {
+                nvim_lsp = 'λ',
+                vsnip = '⋗',
+                buffer = 'Ω',
+                path = '🖫',
+            }
+            item.menu = menu_icon[entry.source.name]
+            return item
+        end,
+        expandable_indicator = true,
+    },
 }
 
 cmp.event:on(
