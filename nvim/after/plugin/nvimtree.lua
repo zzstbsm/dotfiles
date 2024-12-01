@@ -141,6 +141,5 @@ require('nvim-tree').setup({
 })
 
 -- Global Keymap
-vim.api.nvim_set_keymap('n', '<C-b>', ':NvimTreeToggle<cr>', { silent = true, noremap = true } )
-
+vim.api.nvim_set_keymap('n', '<C-j>', ':NvimTreeToggle<cr>', { silent = true, noremap = true } )
 

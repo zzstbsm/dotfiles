@@ -1,5 +1,5 @@
-vim.keymap.set('n', '<C-j>', vim.cmd.FloatermToggle)
-vim.keymap.set('t', '<C-j>', vim.cmd.FloatermToggle)
+vim.keymap.set('n', '<C-k>', vim.cmd.FloatermToggle)
+vim.keymap.set('t', '<C-k>', vim.cmd.FloatermToggle)
 vim.keymap.set('t', '<C-t>', vim.cmd.FloatermNew)
 vim.keymap.set('t', '<C-p>', vim.cmd.FloatermPrev)
 vim.keymap.set('t', '<C-n>', vim.cmd.FloatermNext)
