@@ -37,7 +37,6 @@ local on_attach = function(bufnr)
     map('n', '<leader>tb', gitsigns.toggle_current_line_blame)
     map('n', '<leader>hd', gitsigns.diffthis)
     map('n', '<leader>hD', function() gitsigns.diffthis('~') end)
-    map('n', '<leader>hi', gitsigns.preview_hunk_inline)
 
     -- Text object
     map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
