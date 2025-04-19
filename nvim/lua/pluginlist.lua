@@ -149,6 +149,18 @@ return {
         config = true
     },
 
+    -- Vimwiki
+    {
+        'vimwiki/vimwiki',
+        tag = 'v2024.01.24',
+        init = function()
+            vim.g.vimwiki_list ={
+                { path = "$HOME/Nextcloud/Notes/", syntax = 'markdown', ext = '.md' }
+            }
+            vim.g.vimwiki_use_mouse = 1
+        end
+    },
+
     -- Markdown preview
     {
         "iamcco/markdown-preview.nvim",
