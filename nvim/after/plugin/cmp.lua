@@ -62,7 +62,7 @@ cmp.setup {
         end, { 'i', 's' }),
     },
     sources = cmp.config.sources({
-        -- { name = 'path', keyword_length = 2 },          -- file paths
+        { name = 'path', keyword_length = 2 },          -- file paths
 	    { name = 'nvim_lsp', keyword_length = 3 },      -- from language server
 	    { name = 'nvim_lsp_signature_help' },           -- display function signatures with current parameter emphasized
 	    { name = 'nvim_lua', keyword_length = 2 },      -- complete neovim's Lua runtime API such vim.lsp.*
@@ -78,6 +78,7 @@ cmp.setup {
     formatting = {
         fields = { 'menu', 'abbr', 'kind' },
         format = function(entry, item)
+            item = require("tailwindcss-colorizer-cmp").formatter(entry, item)
             local menu_icon = {
                 nvim_lsp = 'λ',
                 vsnip = '⋗',

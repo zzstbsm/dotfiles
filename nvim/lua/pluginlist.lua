@@ -192,7 +192,15 @@ return {
             require("live_server.util").install()
         end,
     },
-
+    -- 
+    {
+        "roobert/tailwindcss-colorizer-cmp.nvim",
+        config = function()
+            require("tailwindcss-colorizer-cmp").setup({
+                color_square_width = 2,
+            })
+        end
+    },
     -- Prettier for js
     'prettier/vim-prettier',
 
