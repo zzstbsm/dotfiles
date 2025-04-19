@@ -112,11 +112,19 @@ return {
 		'nvim-telescope/telescope.nvim',
 		tag = '0.1.6',
 		branch = '0.1.x',
-		dependencies = { 'nvim-lua/plenary.nvim' }
-    },
-    {
-		'nvim-telescope/telescope-fzf-native.nvim',
-		build = 'make',
+		dependencies = {
+            {
+                "isak102/telescope-git-file-history.nvim",
+                dependencies = {
+                    "tpope/vim-fugitive"
+                }
+            },
+            {
+                'nvim-telescope/telescope-fzf-native.nvim',
+                build = 'make',
+            },
+            "nvim-lua/plenary.nvim",
+        }
     },
 
 	-- Treesitter: Highlighting
