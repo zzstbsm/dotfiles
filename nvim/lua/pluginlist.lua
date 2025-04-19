@@ -131,7 +131,12 @@ return {
 
 	-- Git tool
 	'tpope/vim-fugitive',
-    'rhysd/git-messenger.vim',
+    {
+        'rhysd/git-messenger.vim',
+        init = function()
+            vim.g.git_messenger_no_default_mappings = true
+        end
+    },
     'f-person/git-blame.nvim',
     'lewis6991/gitsigns.nvim',
     'sindrets/diffview.nvim',
@@ -154,7 +159,7 @@ return {
         'vimwiki/vimwiki',
         tag = 'v2024.01.24',
         init = function()
-            vim.g.vimwiki_list ={
+            vim.g.vimwiki_list = {
                 { path = "$HOME/Nextcloud/Notes/", syntax = 'markdown', ext = '.md' }
             }
             vim.g.vimwiki_use_mouse = 1
