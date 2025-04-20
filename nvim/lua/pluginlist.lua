@@ -8,6 +8,16 @@ return {
 			vim.cmd("colorscheme tokyonight-storm")
 		end
     },
+    {
+        'AlexvZyl/nordic.nvim',
+        lazy = false,
+        priority = 1000,
+    },
+    {
+        'sainnhe/everforest',
+        lazy = false,
+        priority = 1000,
+    },
 	-- Tree view
     {
     	'nvim-tree/nvim-tree.lua',
@@ -31,6 +41,14 @@ return {
                 }
 			)
         end,
+    },
+    -- Improve tab aestethics
+    {
+        "akinsho/bufferline.nvim",
+        version = "*",
+        dependencies = {
+            "nvim-tree/nvim-web-devicons", -- optional dependency
+        },
     },
     -- Set bar for code context
     {
