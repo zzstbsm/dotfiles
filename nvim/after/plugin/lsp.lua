@@ -5,20 +5,24 @@ capabilities.textDocument.foldingRange = {
     lineFoldingOnly = true,
 }
 
+local navic = require('nvim-navic')
+local navbuddy = require('nvim-navbuddy')
+local telescope = require('telescope.builtin')
+
 local on_attach = function(client, bufnr)
 
     local bufmap = function(keys, func, desc)
         vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
     end
 
-    -- On attach navic
     if client.server_capabilities.documentSymbolProvider then
-        require('nvim-navic').attach(client, bufnr)
+        -- On attach navic
+        navic.attach(client, bufnr)
+
+        -- On attach navbuddy
+        navbuddy.attach(client, bufnr)
     end
 
-    -- On attach navbuddy
-    local navbuddy = require('nvim-navbuddy')
-    navbuddy.attach(client, bufnr)
     bufmap('<C-n>', navbuddy.open, 'Open Navbuddy')
 
 
@@ -31,9 +35,9 @@ local on_attach = function(client, bufnr)
     bufmap('gR', vim.lsp.buf.rename, "Rename the symbol in the code")
     bufmap('<leader>D', vim.lsp.buf.type_definition)
 
-    bufmap('gr', require('telescope.builtin').lsp_references)
-    bufmap('<leader>s', require('telescope.builtin').lsp_document_symbols)
-    bufmap('<leader>S', require('telescope.builtin').lsp_dynamic_workspace_symbols)
+    bufmap('gr', telescope.lsp_references)
+    bufmap('<leader>s', telescope.lsp_document_symbols)
+    bufmap('<leader>S', telescope.lsp_dynamic_workspace_symbols)
 
     bufmap('K', vim.lsp.buf.hover, "Hover on the symbol")
 
