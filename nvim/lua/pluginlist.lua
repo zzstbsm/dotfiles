@@ -42,6 +42,14 @@ return {
             "nvim-tree/nvim-web-devicons", -- optional dependency
         },
     },
+    -- Add scrollbar
+    {
+        "petertriho/nvim-scrollbar",
+        dependencies = {
+            "lewis6991/gitsigns.nvim",      -- git signs on the scrollbar
+            "kevinhwang91/nvim-hlslens",
+        }
+    },
 
 	-- LSP plugin configuration
     "williamboman/mason.nvim",
