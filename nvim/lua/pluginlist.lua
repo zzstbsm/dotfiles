@@ -50,6 +50,13 @@ return {
             "kevinhwang91/nvim-hlslens",
         }
     },
+    -- Fold/unfold code
+    {
+        "kevinhwang91/nvim-ufo",
+        dependencies = {
+            "kevinhwang91/promise-async"
+        }
+    },
 
 	-- LSP plugin configuration
     "williamboman/mason.nvim",
