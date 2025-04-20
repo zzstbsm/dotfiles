@@ -193,7 +193,17 @@ return {
     'f-person/git-blame.nvim',
     'lewis6991/gitsigns.nvim',
     'sindrets/diffview.nvim',
-
+    {
+        "NeogitOrg/neogit",
+        dependencies = {
+            "nvim-lua/plenary.nvim",         -- required
+            "sindrets/diffview.nvim",        -- optional - Diff integration
+            "nvim-telescope/telescope.nvim", -- optional
+        },
+        config = function ()
+            require('neogit').setup({})
+        end
+    },
     -- Floating terminal
     'voldikss/vim-floaterm',
     {
