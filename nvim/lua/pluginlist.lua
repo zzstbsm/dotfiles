@@ -175,6 +175,16 @@ return {
 
     -- Floating terminal
     'voldikss/vim-floaterm',
+    {
+        "SmiteshP/nvim-navbuddy",
+        dependencies = {
+            "neovim/nvim-lspconfig",
+            "SmiteshP/nvim-navic",
+            "MunifTanjim/nui.nvim",
+            "numToStr/Comment.nvim",        -- Optional
+            "nvim-telescope/telescope.nvim" -- Optional
+        }
+    },
 
     -- Surround strings with markers
     'tpope/vim-surround',

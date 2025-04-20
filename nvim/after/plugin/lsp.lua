@@ -7,28 +7,35 @@ capabilities.textDocument.foldingRange = {
 
 local on_attach = function(client, bufnr)
 
+    local bufmap = function(keys, func, desc)
+        vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
+    end
+
+    -- On attach navic
     if client.server_capabilities.documentSymbolProvider then
         require('nvim-navic').attach(client, bufnr)
     end
 
-    local bufmap = function(keys, func)
-        vim.keymap.set('n', keys, func, { buffer = bufnr })
-    end
+    -- On attach navbuddy
+    local navbuddy = require('nvim-navbuddy')
+    navbuddy.attach(client, bufnr)
+    bufmap('<C-n>', navbuddy.open, 'Open Navbuddy')
+
 
     bufmap('<leader>r', vim.lsp.buf.rename)
     bufmap('<leader>A', vim.lsp.buf.code_action)
 
-    bufmap('gd', vim.lsp.buf.definition)
-    bufmap('gD', vim.lsp.buf.declaration)
-    bufmap('gI', vim.lsp.buf.implementation)
-    bufmap('gR', vim.lsp.buf.rename)
+    bufmap('gd', vim.lsp.buf.definition, "Go to symbol definition")
+    bufmap('gD', vim.lsp.buf.declaration, "Go to symbol declaration")
+    bufmap('gI', vim.lsp.buf.implementation, "Open window with symbol implementation")
+    bufmap('gR', vim.lsp.buf.rename, "Rename the symbol in the code")
     bufmap('<leader>D', vim.lsp.buf.type_definition)
 
     bufmap('gr', require('telescope.builtin').lsp_references)
     bufmap('<leader>s', require('telescope.builtin').lsp_document_symbols)
     bufmap('<leader>S', require('telescope.builtin').lsp_dynamic_workspace_symbols)
 
-    bufmap('K', vim.lsp.buf.hover)
+    bufmap('K', vim.lsp.buf.hover, "Hover on the symbol")
 
     vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
         vim.lsp.buf.format()
