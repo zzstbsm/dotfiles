@@ -1,4 +1,11 @@
-local on_attach = function(_, bufnr)
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+
+local on_attach = function(client, bufnr)
+
+    if client.server_capabilities.documentSymbolProvider then
+        require('nvim-navic').attach(client, bufnr)
+    end
 
     local bufmap = function(keys, func)
         vim.keymap.set('n', keys, func, { buffer = bufnr })
@@ -24,9 +31,6 @@ local on_attach = function(_, bufnr)
     end, {})
 end
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
-
 require('mason').setup()
 
 require('mason-lspconfig').setup{
@@ -45,13 +49,14 @@ require('mason-lspconfig').setup{
         'lua_ls',                               -- Lua
         'prosemd_lsp',                          -- Markdown
         -- 'pylsp',                                -- Python
-        'pyright',                                -- Python
+        'pyright',                              -- Python
         'rust_analyzer',                        -- rust
         'taplo',                                -- TOML
         'texlab',                               -- LaTeX
         'yamlls',                               -- YAML
 
-    }
+    },
+    automatic_installation = true
 }
 require("mason-lspconfig").setup_handlers(
 	{

@@ -93,6 +93,6 @@ cmp.setup {
 }
 
 cmp.event:on(
-  'confirm_done',
-  cmp_autopairs.on_confirm_done()
+    'confirm_done',
+    cmp_autopairs.on_confirm_done()
 )
