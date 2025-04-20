@@ -18,6 +18,13 @@ return {
         lazy = false,
         priority = 1000,
     },
+    {
+        'glepnir/nerdicons.nvim',
+        cmd = 'NerdIcons',
+        config = function()
+            require('nerdicons').setup({})
+        end
+    },
 	-- Tree view
     {
     	'nvim-tree/nvim-tree.lua',
