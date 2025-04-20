@@ -128,6 +128,9 @@ return {
         main = "ibl",
     },
 
+    -- Search hlslens
+    "kevinhwang91/nvim-hlslens",
+
 	-- Debugger
 	"puremourning/vimspector",
 
