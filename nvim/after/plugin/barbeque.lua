@@ -1,9 +1,7 @@
--- require('barbecue').setup({
-
-    ---Whether to attach navic to language servers automatically.
-    -- attach_navic = false
-
--- })
+require('barbecue').setup({
+    -- Whether to attach navic to language servers automatically.
+    attach_navic = false
+})
 require('barbecue.ui').toggle(true)
 
 vim.api.nvim_create_autocmd({
