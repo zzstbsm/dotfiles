@@ -93,6 +93,52 @@ local function on_attach(bufnr)
         change_view_size(-10)
     end
 
+    local compare_two_marked = function()
+
+        local is_directory_or_symlink_dir = function(node)
+            if (
+                node.type == "file"                     -- file
+                or (                                    -- link to file
+                    node.type == "link" and
+                    node.fs_stat_target.type == "file"
+                )
+            ) then
+                return false
+            end
+            return true
+        end
+
+        local marked_list = api.marks.list()
+        local marked_number = 0
+        -- Count number of marked files
+        for _, value in pairs(marked_list) do
+            marked_number = marked_number + 1
+            if is_directory_or_symlink_dir(value) then
+                vim.notify(
+                    "Please select two files for comparison, directories are not allowed",
+                    vim.log.levels.WARN
+                )
+                return
+            end
+        end
+        if marked_number == 2 then
+            -- Extract the nodes
+            local first = marked_list[1]
+            local second = marked_list[2]
+
+            api.tree.close()
+            vim.cmd(string.format(
+                ":e %s | diffthis | vsplit %s | diffthis", first.absolute_path, second.absolute_path
+            ))
+        elseif marked_number == 0 then
+            vim.notify("Mark two files in order to use comparison", vim.log.levels.WARN)
+            return
+        else
+            vim.notify("Only two files marked is allowed for comparison", vim.log.levels.WARN)
+            return
+        end
+    end
+
     -- on_attach
     vim.keymap.set("n", "l", edit_or_open, opts("Edit Or Open"))
     vim.keymap.set("n", "L", vsplit_preview, opts("Vsplit Preview"))
@@ -102,6 +148,7 @@ local function on_attach(bufnr)
     vim.keymap.set("n", "gr", api.git.reload, opts("Update git status"))
     vim.keymap.set("n", "<C-h>", view_size_decrease, opts("Decrease view"))
     vim.keymap.set("n", "<C-l>", view_size_increase, opts("Increase view"))
+    vim.keymap.set("n", "<C-c>", compare_two_marked, opts("Compare two marked files"))
     vim.keymap.set("n", "<leader>d", view_size_set_default, opts("Set default view size"))
 end
 
@@ -138,6 +185,15 @@ require('nvim-tree').setup({
     sort_by = function(nodes)
         table.sort(nodes, natural_cmp)
     end,
+    renderer = {
+        indent_markers = {
+            enable = true
+        },
+    },
+    diagnostics = {
+        enable = true,
+        show_on_dirs = true,
+    }
 })
 
 -- Global Keymap
