@@ -18,12 +18,19 @@ return {
         lazy = false,
         priority = 1000,
     },
+    -- Nerdicons integration inside nvim
     {
         'glepnir/nerdicons.nvim',
         cmd = 'NerdIcons',
         config = function()
             require('nerdicons').setup({})
         end
+    },
+    -- Alpha nvim welcome dashboard
+    {
+        'goolord/alpha-nvim',
+        dependencies = {
+        },
     },
 	-- Tree view
     {
