@@ -82,6 +82,7 @@ return {
             "kevinhwang91/promise-async"
         }
     },
+    "rcarriga/nvim-notify",
 
 	-- LSP plugin configuration
     "williamboman/mason.nvim",
