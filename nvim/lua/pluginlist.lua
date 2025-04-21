@@ -278,6 +278,8 @@ return {
     'prettier/vim-prettier',
 
     -- VimBeGood Game
-    'ThePrimeagen/vim-be-good'
+    'ThePrimeagen/vim-be-good',
 
+    -- Kubectl nvim
+    'Ramilito/kubectl.nvim',
 }
