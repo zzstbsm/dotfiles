@@ -39,6 +39,13 @@ local on_attach = function(client, bufnr)
     bufmap('<leader>s', telescope.lsp_document_symbols)
     bufmap('<leader>S', telescope.lsp_dynamic_workspace_symbols)
 
+    bufmap(
+        '<leader>d',
+        function()
+            vim.diagnostic.open_float({ scope = "cursor" })
+        end,
+        "Open diagnostic window"
+    )
     bufmap('K', vim.lsp.buf.hover, "Hover on the symbol")
 
     vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
