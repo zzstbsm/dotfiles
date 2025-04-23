@@ -289,4 +289,7 @@ return {
 
     -- Kubectl nvim
     'Ramilito/kubectl.nvim',
+
+    -- Copilot
+    'github/copilot.vim',
 }
