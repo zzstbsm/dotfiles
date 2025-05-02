@@ -2,6 +2,7 @@
 !.gitignore
 !nvim/
 !ghostty/
+!logiops/
 !starship.toml
 !tmux/
 !README.md
