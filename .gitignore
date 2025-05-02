@@ -1,6 +1,7 @@
 *
 !.gitignore
 !nvim/
+!ghostty/
 !starship.toml
 !tmux/
 !README.md
