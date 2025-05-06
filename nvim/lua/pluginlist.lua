@@ -291,5 +291,10 @@ return {
     'Ramilito/kubectl.nvim',
 
     -- Copilot
-    'github/copilot.vim',
+    {
+        'github/copilot.vim',
+        config = function ()
+            vim.cmd(":Copilot disable")
+        end
+    },
 }
