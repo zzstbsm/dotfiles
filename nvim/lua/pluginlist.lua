@@ -253,6 +253,7 @@ return {
             vim.g.vimwiki_use_mouse = 1
         end
     },
+    'mattn/calendar-vim',
 
     -- Markdown preview
     {
