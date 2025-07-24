@@ -12,5 +12,6 @@ vim.api.nvim_create_autocmd("BufEnter", {
 })
 vim.keymap.set('n', '<leader>gl', ':G log<CR>', { desc = 'Git log' } )
 vim.keymap.set('n', '<leader>gc', ':G commit<CR>', { desc = 'Git commit' } )
-vim.keymap.set('n', '<leader>gp', ':G push<CR>', { desc = 'Git push' } )
+vim.keymap.set('n', '<leader>gp', ':G pull --rebase<CR>', { desc = 'Git pull rebase' } )
+vim.keymap.set('n', '<leader>gP', ':G push<CR>', { desc = 'Git push' } )
 
