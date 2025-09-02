@@ -114,7 +114,12 @@ return {
 
     -- Neovim namespace for code completion in the setup
 	"folke/neodev.nvim",
-	"simrat39/rust-tools.nvim",
+	-- "simrat39/rust-tools.nvim",
+    {
+        'mrcjkb/rustaceanvim',
+        version = '^6', -- Recommended
+        lazy = false, -- This plugin is already lazy
+    },
 
 	-- Code completion
     {

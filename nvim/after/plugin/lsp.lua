@@ -55,7 +55,7 @@ end
 
 require('mason').setup()
 
-require('mason-lspconfig').setup{
+require('mason-lspconfig').setup({
     ensure_installed = {
         'clangd',                               -- C/C++
         'cmake',                                -- CMake
@@ -79,96 +79,146 @@ require('mason-lspconfig').setup{
 
     },
     automatic_installation = true
-}
-require("mason-lspconfig").setup_handlers(
-	{
-	    function(server_name)
-	        require("lspconfig")[server_name].setup {
-	            on_attach = on_attach,
-	            capabilities = capabilities
-	        }
-	    end,
+})
 
-	    ["lua_ls"] = function()
-	        require('neodev').setup()
-	        require('lspconfig').lua_ls.setup {
-	            on_attach = on_attach,
-	            capabilities = capabilities,
-	            settings = {
-	                Lua = {
-	                    workspace = { checkThirdParty = false },
-	                    telemetry = { enable = false },
-                        diagnostics = {
-                            disable = { "missing-fields" },
-                        }
-	                },
-	            }
-	        }
-	    end,
-		["rust_analyzer"] = function()
-			require("rust-tools").setup({
-                server = {
-                    on_attach = on_attach,
-                    capabilities = capabilities,
-                },
-            })
-		end,
+vim.lsp.config('*', {
+    on_attach = on_attach,
+    capabilities = capabilities,
+})
 
-        ["yamlls"] = function()
-            require("lspconfig").yamlls.setup {
-                on_attach = on_attach,
-                filetypes = { 'yaml', 'yml' },
-                settings = {
-                    yaml = {
-                        format = {
-                            enable = true
-                        },
-                        hover = true,
-                        completion = true,
-                        validate = true,
-                        schemas = {
-                            kubernetes = "{k8s,kube{rnetes,}/}*.yaml",
-                            ["http://json.schemastore.org/kustomization"] = "kustomization.{yml,yaml}",
-                            ["https://raw.githubusercontent.com/docker/compose/master/compose/config/compose_spec.json"] = "docker-compose*.{yml,yaml}",
-                            ["https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/argoproj.io/application_v1alpha1.json"] = "argocd-application.yaml",
-                        },
-                        schemaStore = {
-                            enable = true,
-                            url = "https://www.schemastore.org/api/json/catalog.json",
-                        }
-                    }
-                },
-                capabilities = capabilities,
+vim.lsp.config('lua_ls', {
+    on_attach = on_attach,
+    capabilities = capabilities,
+	settings = {
+	    Lua = {
+	        workspace = { checkThirdParty = false },
+	        telemetry = { enable = false },
+            diagnostics = {
+                disable = { "missing-fields" },
             }
-        end,
+	    },
+	}
+})
+--
+-- vim.lsp.config('rust_analyzer', {
+--     on_attach = on_attach,
+--     capabilities = capabilities,
+-- })
 
-        -- ["pylsp"] = function()
-        --     require("lspconfig").pylsp.setup {
-        --         on_attach = on_attach,
-        --         capabilities = capabilities,
-        --         cmd = { "pylsp" },
-        --         settings = {
-        --             pylsp = {
-        --                 plugins = {
-        --                     pylint = { enabled = true },
-        --                     rope_autoimport = {
-        --                         code_actions = { enabled = false },
-        --                         completions = { enabled = false }
-        --                     }
-        --                 }
-        --             }
-        --         }
-        --     }
-        -- end
-        --
-        --
-        --
-        -- The default settings in function(server_name) can be ovveridden if
-        -- something as follows is defined
-        --
-        -- ["lsp_server_name"] = function()
-        --     require('new_lsp_server_name').setup()
-        -- end,
+vim.lsp.config('yamlls', {
+    on_attach = on_attach, filetypes = { 'yaml', 'yml' },
+    settings = {
+        yaml = {
+            format = {
+                enable = true
+            },
+            hover = true,
+            completion = true,
+            validate = true,
+            schemas = {
+                kubernetes = "{k8s,kube{rnetes,}/}*.yaml",
+                ["http://json.schemastore.org/kustomization"] = "kustomization.{yml,yaml}",
+                ["https://raw.githubusercontent.com/docker/compose/master/compose/config/compose_spec.json"] = "docker-compose*.{yml,yaml}",
+                ["https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/argoproj.io/application_v1alpha1.json"] = "argocd-application.yaml",
+            },
+            schemaStore = {
+                enable = true,
+                url = "https://www.schemastore.org/api/json/catalog.json",
+            }
+        }
+    },
+    capabilities = capabilities,
+})
 
-   }
-)
+-- require("mason-lspconfig").setup_handlers(
+-- 	{
+-- 	    function(server_name)
+-- 	        require("lspconfig")[server_name].setup {
+-- 	            on_attach = on_attach,
+-- 	            capabilities = capabilities
+-- 	        }
+-- 	    end,
+--
+-- 	    ["lua_ls"] = function()
+-- 	        require('neodev').setup()
+-- 	        require('lspconfig').lua_ls.setup {
+-- 	            on_attach = on_attach,
+-- 	            capabilities = capabilities,
+-- 	            settings = {
+-- 	                Lua = {
+-- 	                    workspace = { checkThirdParty = false },
+-- 	                    telemetry = { enable = false },
+--                         diagnostics = {
+--                             disable = { "missing-fields" },
+--                         }
+-- 	                },
+-- 	            }
+-- 	        }
+-- 	    end,
+-- 		["rust_analyzer"] = function()
+-- 			require("rust-tools").setup({
+--                 server = {
+--                     on_attach = on_attach,
+--                     capabilities = capabilities,
+--                 },
+--             })
+-- 		end,
+--
+--         ["yamlls"] = function()
+--             require("lspconfig").yamlls.setup {
+--                 on_attach = on_attach,
+--                 filetypes = { 'yaml', 'yml' },
+--                 settings = {
+--                     yaml = {
+--                         format = {
+--                             enable = true
+--                         },
+--                         hover = true,
+--                         completion = true,
+--                         validate = true,
+--                         schemas = {
+--                             kubernetes = "{k8s,kube{rnetes,}/}*.yaml",
+--                             ["http://json.schemastore.org/kustomization"] = "kustomization.{yml,yaml}",
+--                             ["https://raw.githubusercontent.com/docker/compose/master/compose/config/compose_spec.json"] = "docker-compose*.{yml,yaml}",
+--                             ["https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/argoproj.io/application_v1alpha1.json"] = "argocd-application.yaml",
+--                         },
+--                         schemaStore = {
+--                             enable = true,
+--                             url = "https://www.schemastore.org/api/json/catalog.json",
+--                         }
+--                     }
+--                 },
+--                 capabilities = capabilities,
+--             }
+--         end,
+--
+--         -- ["pylsp"] = function()
+--         --     require("lspconfig").pylsp.setup {
+--         --         on_attach = on_attach,
+--         --         capabilities = capabilities,
+--         --         cmd = { "pylsp" },
+--         --         settings = {
+--         --             pylsp = {
+--         --                 plugins = {
+--         --                     pylint = { enabled = true },
+--         --                     rope_autoimport = {
+--         --                         code_actions = { enabled = false },
+--         --                         completions = { enabled = false }
+--         --                     }
+--         --                 }
+--         --             }
+--         --         }
+--         --     }
+--         -- end
+--         --
+--         --
+--         --
+--         -- The default settings in function(server_name) can be ovveridden if
+--         -- something as follows is defined
+--         --
+--         -- ["lsp_server_name"] = function()
+--         --     require('new_lsp_server_name').setup()
+--         -- end,
+--
+--    }
+-- )
