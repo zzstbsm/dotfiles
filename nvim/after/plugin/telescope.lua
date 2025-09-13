@@ -26,6 +26,7 @@ require('telescope').setup({
 
 require('telescope').load_extension('fzf')
 require('telescope').load_extension('git_file_history')
+require('telescope').load_extension('notify')
 
 vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Telescope find_files' })
 vim.keymap.set('n', '<leader>fs', builtin.git_status, { desc = 'Telescope git_status' })
