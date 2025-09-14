@@ -265,6 +265,12 @@ return {
                 { path = "$HOME/Nextcloud/Notes/", syntax = 'markdown', ext = '.md' }
             }
             vim.g.vimwiki_use_mouse = 1
+            vim.api.nvim_create_autocmd("FileType", {
+              pattern = "vimwiki",
+              callback = function()
+                vim.bo.filetype = "markdown"
+              end,
+            })
         end
     },
     'mattn/calendar-vim',
@@ -275,6 +281,11 @@ return {
         cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
         ft = { "markdown" },
         build = function() vim.fn["mkdp#util#install"]() end,
+    },
+    -- Rendering Markdown in nvim
+    {
+        'MeanderingProgrammer/render-markdown.nvim',
+        dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' },
     },
 
     -- Live server for frontend developement
