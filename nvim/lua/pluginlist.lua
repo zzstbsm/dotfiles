@@ -89,6 +89,15 @@ return {
             "kevinhwang91/promise-async"
         }
     },
+    -- Dimming inactive code
+    {
+        "folke/twilight.nvim",
+        config = function ()
+            vim.cmd(":TwilightEnable")
+        end
+    },
+
+    -- Pretty notifications
     "rcarriga/nvim-notify",
 
 	-- LSP plugin configuration
