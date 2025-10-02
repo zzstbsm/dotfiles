@@ -70,8 +70,8 @@ require('mason-lspconfig').setup({
         'kotlin_language_server',               -- Kotlin
         'lua_ls',                               -- Lua
         'prosemd_lsp',                          -- Markdown
-        -- 'pylsp',                                -- Python
-        'pyright',                              -- Python
+        'pylsp',                                -- Python
+        -- 'pyright',                              -- Python
         'rust_analyzer',                        -- rust
         'taplo',                                -- TOML
         'texlab',                               -- LaTeX
@@ -104,6 +104,28 @@ vim.lsp.config('lua_ls', {
 --     on_attach = on_attach,
 --     capabilities = capabilities,
 -- })
+
+vim.lsp.config('pylsp', {
+    on_attach = on_attach,
+    capabilities = capabilities,
+    -- cmd = { "pylsp" },
+    settings = {
+        pylsp = {
+            plugins = {
+                pylint = { enabled = true },
+                rope_autoimport = {
+                    enabled = true,
+                    code_actions = { enabled = true },
+                    completions = { enabled = true }
+                },
+                pycodestyle={
+                    enabled=true,
+                    ignore={'E501', 'E231'},
+                }
+            },
+        }
+    }
+})
 
 vim.lsp.config('yamlls', {
     on_attach = on_attach, filetypes = { 'yaml', 'yml' },
