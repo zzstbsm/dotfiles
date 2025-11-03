@@ -1,3 +1,3 @@
 #!/bin/bash
 
-sudo ln $HOME/.config/logiops/logid.cfg /etc/logid.cfg
+sudo ln -s $HOME/.config/logiops/logid.cfg /etc/logid.cfg
