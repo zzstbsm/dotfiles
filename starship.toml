@@ -5,24 +5,6 @@
 add_newline = true
 command_timeout = 1000
 
-# format = """
-# \n\
-# [░▒▓](#a3aed2)\
-# $os\
-# [ ](bg:#769ff0 fg:#a3aed2)\
-# $username$hostname\
-# [ ](bg:#394260 fg:#769ff0)\
-# $directory\
-# [ ](bg:#212736 fg:#394260)\
-# $kubernetes\
-# [ ](bg:#1d2230 fg:#212736)\
-# $time\
-# [ ](fg:#1d2230)\
-# $git_branch$git_status\
-# $python\
-# \n\
-# $character
-# """
 format = """
 [](fg:lavender)\
 [ $os $username ](bg:lavender fg:crust)\
@@ -137,29 +119,11 @@ disabled = false
 
 # ---
 
-[vagrant]
-disabled = true
-
-[docker_context]
-disabled = true
-
-[helm]
-disabled = true
-
 [python]
 format = "\n[](fg:mantle)[ $symbol | $virtualenv | $version ]($style)[ ](fg:mantle)"
 style = "bg:mantle fg:lavender"
-#pyenv_version_name = true
-disabled = false
 
-[nodejs]
-disabled = true
-
-[ruby]
-disabled = true
-
-[terraform]
-disabled = true
+# ---
 
 [palettes.catppuccin_mocha]
 rosewater = "#f5e0dc"
