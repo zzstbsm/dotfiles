@@ -18,7 +18,7 @@ $kubernetes\
 $conda\
 [](bg:red fg:peach)\
 $time\
-[ ](fg:red)\n\
+[ ](fg:red)\
 $git_branch$git_status\
 $python\
 $line_break\
@@ -91,7 +91,7 @@ format = '[  $time ]($style)'
 # Shows current git branch
 [git_branch]
 symbol = ''
-format = "[](fg:mantle)[ $symbol $branch ]($style)"
+format = "\n[](fg:mantle)[ $symbol $branch ]($style)"
 # truncation_length = 4
 truncation_symbol = '…/'
 style = 'bg:mantle fg:lavender'
