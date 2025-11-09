@@ -91,13 +91,13 @@ return {
             "kevinhwang91/promise-async"
         }
     },
-    -- Dimming inactive code
-    {
-        "folke/twilight.nvim",
-        config = function ()
-            vim.cmd(":TwilightEnable")
-        end
-    },
+    -- -- Dimming inactive code
+    -- {
+    --     "folke/twilight.nvim",
+    --     config = function ()
+    --         vim.cmd(":TwilightEnable")
+    --     end
+    -- },
 
     -- Pretty notifications
     "rcarriga/nvim-notify",
