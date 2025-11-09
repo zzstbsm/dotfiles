@@ -3,10 +3,8 @@ return {
     -- Theme plugin
     {
         "folke/tokyonight.nvim",
+        lazy = false,
         priority = 1000,
-		config = function()
-			vim.cmd("colorscheme tokyonight-storm")
-		end
     },
     {
         'AlexvZyl/nordic.nvim',
@@ -17,6 +15,11 @@ return {
         'sainnhe/everforest',
         lazy = false,
         priority = 1000,
+    },
+    {
+        "catppuccin/nvim",
+        name = "catppuccin",
+        priority = 1000
     },
     -- Nerdicons integration inside nvim
     {
@@ -51,7 +54,6 @@ return {
             require("lualine").setup(
 	    		{
                     icons_enabled = true,
-                    theme = 'tokoynight',
                 }
 			)
         end,
