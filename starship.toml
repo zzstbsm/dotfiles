@@ -11,6 +11,7 @@ format = """
 [](bg:sapphire fg:lavender)\
 [ $directory ](bg:sapphire fg:crust)\
 [](bg:green fg:sapphire)\
+$aws\
 [](bg:flamingo fg:green)\
 $kubernetes\
 [](bg:peach fg:flamingo)\
@@ -111,11 +112,16 @@ staged = '[󰐗 staged=${count} ](bg:surface0 fg:green)'
 renamed = '[󱍸 renamed=${count} ](bg:surface0 fg:yellow)'
 deleted = '[󰍶 deleted=${count} ](bg:surface0 fg:red)'
 
+[aws]
+symbol = ''
+style = 'bg:green fg:crust'
+format = '[ $symbol $profile \($region\) )]($style)'
+
 # Shows kubernetes context and namespace
 [kubernetes]
 style = 'bg:flamingo fg:crust'
-format = '[ 󱃾 $context\($namespace\) ]($style)'
-disabled = false
+symbol = '󱃾'
+format = '[ $symbol $context\($namespace\) ]($style)'
 
 # ---
 
