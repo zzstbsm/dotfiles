@@ -1,8 +1,15 @@
 *
-!.gitignore
-!nvim/
+
 !ghostty/
+!ghostty/*
 !logiops/
+!logiops/*
+!nvim/
+!nvim/*
 !starship.toml
 !tmux/
+!tmux/*
+!waybar/
+!waybar/*
+
 !README.md
