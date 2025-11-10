@@ -114,7 +114,7 @@ deleted = '[󰍶 deleted=${count} ](bg:surface0 fg:red)'
 [aws]
 symbol = ''
 style = 'bg:green fg:crust'
-format = '[ $symbol $profile \($region\) )]($style)'
+format = '[ $symbol $profile\($region\) ]($style)'
 
 # Shows kubernetes context and namespace
 [kubernetes]
