@@ -15,7 +15,6 @@ $aws\
 [](bg:flamingo fg:green)\
 $kubernetes\
 [](bg:peach fg:flamingo)\
-$conda\
 [](bg:red fg:peach)\
 $time\
 [ ](fg:red)\
@@ -122,6 +121,7 @@ format = '[ $symbol $profile \($region\) )]($style)'
 style = 'bg:flamingo fg:crust'
 symbol = '󱃾'
 format = '[ $symbol $context\($namespace\) ]($style)'
+disabled = false
 
 # ---
 
