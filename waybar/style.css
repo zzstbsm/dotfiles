@@ -1,0 +1,69 @@
+/* -- Global rules -- */
+* {
+  border: none;
+  font-family: "NotoSans Nerd Font";
+  font-size: 16px;
+  min-height: 32px;
+}
+
+window#waybar {
+  background: rgba(34, 36, 54, 0.9);
+}
+
+/* -- General rules for visible modules -- */
+#custom-archicon,
+#clock,
+#cpu,
+#temperature,
+#memory,
+#cava,
+#pulseaudio,
+#privacy {
+  color: #89B4FA;
+  background: #161320;
+  /* color: #161320; */
+  margin-top: 4px;
+  margin-bottom: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
+  transition: none;
+}
+
+/* Separation to the left */
+#custom-archicon,
+#cpu,
+#memory,
+#cava,
+#privacy {
+  margin-left: 4px;
+  padding-left: 16px;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+/* Separation to the right */
+#clock,
+#memory,
+#temperature,
+#pulseaudio,
+#privacy {
+  margin-right: 4px;
+  padding-right: 16px;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+/* -- Specific styles -- */
+#cava,
+#pulseaudio {
+  min-width: 64px;
+}
+
+#privacy {
+  padding-left: 12px;
+  padding-right: 12px;
+}
+#privacy-item {
+  padding-left: 4px;
+  padding-right: 4px;
+}
