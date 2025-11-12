@@ -1,0 +1,72 @@
+#!/bin/bash
+
+PLAYER_NAME=spotify
+PLAYING_STATUS=$(playerctl status --player=$PLAYER_NAME)
+
+TITLE=$(playerctl --player=$PLAYER_NAME metadata xesam:title)
+ARTIST=$(playerctl --player=$PLAYER_NAME metadata xesam:artist)
+ALBUM=$(playerctl --player=$PLAYER_NAME metadata xesam:album)
+
+ALBUM_ART=$(playerctl metadata --player=$PLAYER_NAME mpris:artUrl)
+
+show() {
+
+    ALT=standby
+    TEXT="$TITLE - $ARTIST"
+
+    case "$PLAYING_STATUS" in
+        "Playing") ALT=playing
+        ;;
+        "Paused") ALT=paused
+        ;;
+        *) TEXT=""
+        ;;
+    esac
+
+    TOOLTIP=$(echo "Artist:\`$ARTIST\nTitle:\`$TITLE\nAlbum:\`$ALBUM" | column -t -s '`')
+
+    echo "{\"text\": \"$TEXT\",\"tooltip\": \"$TOOLTIP\",\"alt\": \"$ALT\"}"
+}
+
+image() {
+    
+    SPOTIFY_COVER_PATH="/tmp/spotify-album-cover.jpeg"
+    SPOTIFY_TRACK_PATH="/tmp/spotify-song"
+
+    # Exit if spotify is off
+    [ -z "$PLAYING_STATUS" ] && echo "false"
+
+    # Check if song file had been saved
+    [ ! -f "$SPOTIFY_TRACK_PATH" ] && touch "$SPOTIFY_TRACK_PATH"
+
+    SPOTIFY_CURRENT_TRACK="$ARTIST@$TITLE"
+    SPOTIFY_SAVED_TRACK=$(cat "$SPOTIFY_TRACK_PATH")
+
+    [ "$SPOTIFY_CURRENT_TRACK" != "$SPOTIFY_SAVED_TRACK" ] && curl -s "$ALBUM_ART" -o "$SPOTIFY_COVER_PATH"
+
+    echo "$SPOTIFY_COVER_PATH"
+}
+
+on_click() {
+    case "$PLAYING_STATUS" in
+        # Toggle spotify play
+        "Playing"|"Paused") playerctl play-pause --player=$PLAYER_NAME
+        ;;
+        # Open spotify detached from waybar
+        *) systemd-run --user --scope --quiet spotify &
+        ;;
+    esac
+    
+}
+
+case "$1" in
+    "show") show
+    ;;
+    "click") on_click
+    ;;
+    "image") image
+    ;;
+    *)
+    ;;
+esac
+

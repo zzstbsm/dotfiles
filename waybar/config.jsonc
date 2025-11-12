@@ -20,9 +20,11 @@
   ],
 
   "modules-right": [
+    "privacy",
+    "custom/spotify",
+    "image#spotify-art",
     "cava",
-    "pulseaudio",
-    "privacy"
+    "pulseaudio"
   ],
 
   /* -- Modules on the left --*/
@@ -60,6 +62,24 @@
   },
 
   /* -- Modules on the right --*/
+  "image#spotify-art": {
+    "exec": "$HOME/.config/waybar/scripts/spotify image",
+    "size": 24,
+    "interval": 1
+  },
+  "custom/spotify": {
+    "exec": "$HOME/.config/waybar/scripts/spotify show",
+    "return-type": "json",
+    "interval": 1,
+    "tooltip": true,
+    "format": "{icon} {text}",
+    "format-icons": {
+      "paused": "󰐊",
+      "playing": "󰏤",
+      "standby": "󰓇",
+    },
+    "on-click": "$HOME/.config/waybar/scripts/spotify click"
+  },
   "cava": {
     "framerate": 90,
     "autosens": 1,
