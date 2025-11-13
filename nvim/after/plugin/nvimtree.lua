@@ -151,6 +151,7 @@ local function on_attach(bufnr)
     vim.keymap.set("n", "<C-c>", compare_two_marked, opts("Compare two marked files"))
     vim.keymap.set("n", "<leader>d", view_size_set_default, opts("Set default view size"))
     vim.keymap.set("n", "C", api.marks.clear, opts("Clear all marked files"))
+    vim.keymap.set("n", "O", api.tree.change_root_to_node, opts("CD to directory"))
 end
 
 -- Setup sorting
