@@ -72,10 +72,10 @@
     "return-type": "json",
     "interval": 1,
     "tooltip": true,
-    "format": "{icon} {text}",
+    "format": "{icon}{text}",
     "format-icons": {
-      "paused": "󰐊",
-      "playing": "󰏤",
+      "paused": "󰐊 ",
+      "playing": "󰏤 ",
       "standby": "󰓇",
     },
     "on-click": "$HOME/.config/waybar/scripts/spotify click"

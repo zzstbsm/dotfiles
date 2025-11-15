@@ -1,29 +1,39 @@
 #!/bin/bash
 
 PLAYER_NAME=spotify
-PLAYING_STATUS=$(playerctl status --player="$PLAYER_NAME")
-
-TITLE=$(playerctl --player="$PLAYER_NAME" metadata xesam:title)
-ARTIST=$(playerctl --player="$PLAYER_NAME" metadata xesam:artist)
-ALBUM=$(playerctl --player="$PLAYER_NAME" metadata xesam:album)
+PLAYING_STATUS=$(playerctl --player="$PLAYER_NAME" status)
 
 ALBUM_ART=$(playerctl --player="$PLAYER_NAME" metadata mpris:artUrl)
+TRACK_ID=$(playerctl --player="$PLAYER_NAME" metadata mpris:trackid)
 
 show() {
 
+    if [ ! -z $(echo $TRACK_ID | grep "track") ]; then
+        TEXT=$(playerctl --player="$PLAYER_NAME" metadata --format "{{ title }} - {{ artist }}")
+        TOOLTIP=$(
+            playerctl --player="$PLAYER_NAME" \
+            metadata --format 'Title:`{{title}}\nArtist:`{{artist}}\nAlbum:`{{album}}' \
+            | column -t -s '`'
+        )
+    else
+        TEXT=$(playerctl --player="$PLAYER_NAME" metadata --format "{{ album }} - {{ trunc(title,20) }}")
+        TOOLTIP=$(
+            playerctl --player="$PLAYER_NAME" \
+            metadata --format 'Title:`{{title}}\nSeries:`{{album}}' \
+            | column -t -s '`'
+        )
+    fi
+
     ALT=standby
-    TEXT="$TITLE - $ARTIST"
 
     case "$PLAYING_STATUS" in
         "Playing") ALT=playing
         ;;
         "Paused") ALT=paused
         ;;
-        *) TEXT=""
+        *) TEXT="" && TOOLTIP="Start Spotify"
         ;;
     esac
-
-    TOOLTIP=$(echo "Artist:\`$ARTIST\nTitle:\`$TITLE\nAlbum:\`$ALBUM" | column -t -s '`')
 
     echo "{\"text\": \"$TEXT\",\"tooltip\": \"$TOOLTIP\",\"alt\": \"$ALT\"}"
 }
@@ -34,12 +44,15 @@ image() {
     SPOTIFY_TRACK_PATH="/tmp/spotify-song"
 
     # Exit if spotify is off
-    [ -z "$PLAYING_STATUS" ] && { echo "false"; exit 0; }
+    [ -z "$PLAYING_STATUS" ] && { exit 0; }
 
     # Check if song file had been saved
     [ ! -f "$SPOTIFY_TRACK_PATH" ] && touch "$SPOTIFY_TRACK_PATH"
 
-    SPOTIFY_CURRENT_TRACK="$ARTIST@$TITLE"
+    SPOTIFY_CURRENT_TRACK=$(
+        playerctl --player="$PLAYER_NAME" \
+            metadata --format "{{title}}@{{album}}@{{artist}}"
+    )
     SPOTIFY_SAVED_TRACK=$(cat "$SPOTIFY_TRACK_PATH")
 
     [ "$SPOTIFY_CURRENT_TRACK" != "$SPOTIFY_SAVED_TRACK" ] && \
@@ -52,7 +65,7 @@ image() {
 on_click() {
     case "$PLAYING_STATUS" in
         # Toggle spotify play
-        "Playing"|"Paused") playerctl play-pause --player=$PLAYER_NAME
+        "Playing"|"Paused") playerctl --player=$PLAYER_NAME play-pause
         ;;
         # Open spotify detached from waybar
         *) systemd-run --user --scope --quiet spotify &
@@ -68,7 +81,7 @@ case "$1" in
     ;;
     "image") image
     ;;
-    *)
+    *) echo ""
     ;;
 esac
 
