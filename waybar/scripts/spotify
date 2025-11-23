@@ -8,15 +8,15 @@ TRACK_ID=$(playerctl --player="$PLAYER_NAME" metadata mpris:trackid)
 
 show() {
 
-    if [ ! -z $(echo $TRACK_ID | grep "track") ]; then
-        TEXT=$(playerctl --player="$PLAYER_NAME" metadata --format "{{ title }} - {{ artist }}")
+    if [ ! -z $(echo "$TRACK_ID" | grep "track") ]; then
+        TEXT=$(playerctl --player="$PLAYER_NAME" metadata --format "{{ trunc(title,20) }} - {{ trunc(artist,20) }}")
         TOOLTIP=$(
             playerctl --player="$PLAYER_NAME" \
             metadata --format 'Title:`{{title}}\nArtist:`{{artist}}\nAlbum:`{{album}}' \
             | column -t -s '`'
         )
     else
-        TEXT=$(playerctl --player="$PLAYER_NAME" metadata --format "{{ album }} - {{ trunc(title,20) }}")
+        TEXT=$(playerctl --player="$PLAYER_NAME" metadata --format "{{ trunc(album,20) }} - {{ trunc(title,20) }}")
         TOOLTIP=$(
             playerctl --player="$PLAYER_NAME" \
             metadata --format 'Title:`{{title}}\nSeries:`{{album}}' \
@@ -35,7 +35,12 @@ show() {
         ;;
     esac
 
-    echo "{\"text\": \"$TEXT\",\"tooltip\": \"$TOOLTIP\",\"alt\": \"$ALT\"}"
+    echo $(jq -Rnc \
+        --arg text "$TEXT" \
+        --arg tooltip "$TOOLTIP" \
+        --arg alt "$ALT" \
+        '{text: $text, tooltip: $tooltip, alt: $alt}'
+    )
 }
 
 image() {
