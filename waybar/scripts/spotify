@@ -6,6 +6,8 @@ PLAYING_STATUS=$(playerctl --player="$PLAYER_NAME" status)
 ALBUM_ART=$(playerctl --player="$PLAYER_NAME" metadata mpris:artUrl)
 TRACK_ID=$(playerctl --player="$PLAYER_NAME" metadata mpris:trackid)
 
+CUSTOM_WAYBAR_TMP="/tmp/waybar"
+
 show() {
 
     if [ ! -z $(echo "$TRACK_ID" | grep "track") ]; then
@@ -45,11 +47,17 @@ show() {
 
 image() {
     
-    SPOTIFY_COVER_PATH="/tmp/spotify-album-cover.jpeg"
-    SPOTIFY_TRACK_PATH="/tmp/spotify-song"
+    SPOTIFY_COVER_PATH="$CUSTOM_WAYBAR_TMP/spotify-album-cover.jpeg"
+    SPOTIFY_TRACK_PATH="$CUSTOM_WAYBAR_TMP/spotify-song"
 
-    # Exit if spotify is off
-    [ -z "$PLAYING_STATUS" ] && { exit 0; }
+    # If spotify is off, remove the temp files if it exist and exit
+    if [ -z "$PLAYING_STATUS" ]; then
+        [ -f "$SPOTIFY_TRACK_PATH" ] && rm "$SPOTIFY_TRACK_PATH"
+        [ -f "$SPOTIFY_COVER_PATH" ] && rm "$SPOTIFY_COVER_PATH"
+        exit 0
+    fi
+
+    mkdir -p "$CUSTOM_WAYBAR_TMP"
 
     # Check if song file had been saved
     [ ! -f "$SPOTIFY_TRACK_PATH" ] && touch "$SPOTIFY_TRACK_PATH"
@@ -60,9 +68,11 @@ image() {
     )
     SPOTIFY_SAVED_TRACK=$(cat "$SPOTIFY_TRACK_PATH")
 
-    [ "$SPOTIFY_CURRENT_TRACK" != "$SPOTIFY_SAVED_TRACK" ] && \
-        curl -s "$ALBUM_ART" -o "$SPOTIFY_COVER_PATH" && \
+    # Download new thumbnail if the track changes or if it does not exist
+    if [ "$SPOTIFY_CURRENT_TRACK" != "$SPOTIFY_SAVED_TRACK" ] || [ ! -f "$SPOTIFY_COVER_PATH" ]; then
+        curl -s "$ALBUM_ART" -o "$SPOTIFY_COVER_PATH"
         echo "$SPOTIFY_CURRENT_TRACK" > $SPOTIFY_TRACK_PATH
+    fi
 
     echo "$SPOTIFY_COVER_PATH"
 }
