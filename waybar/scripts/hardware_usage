@@ -1,14 +1,88 @@
 #!/bin/bash
 
-HWMON_CPU="/sys/class/hwmon/hwmon2"     # amdgpu
-HWMON_GPU="/sys/class/hwmon/hwmon4"     # k10temp
+HWMON_GPU="/sys/class/hwmon/hwmon2"     # amdgpu
+HWMON_CPU="/sys/class/hwmon/hwmon4"     # k10temp
 
-CUSTOM_WAYBAR_TMP="/tmp/waybar"
+HWMON="/sys/class/hwmon/"
+
+# https://docs.kernel.org/6.0/hwmon/k10temp.html
+DEVICE_CPU="k10temp"
+DEVICE_GPU="amdgpu"
+
+CUSTOM_WAYBAR_TMP="/tmp/waybar/"
 mkdir -p "$CUSTOM_WAYBAR_TMP"
 
 ICON_LEVEL=( "▁" "▂" "▃" "▄" "▅" "▆" "▇" "█" )
 
-cpu() {
+
+_isolate_pci_id () {
+    : '
+    Take as input a hwmon path and return the PCI ID of the device.
+    e.g. /sys/class/hwmon/hwmon4/device/pci0000:00/0000:00:18.3/hwmon/hwmon4
+         -> 0000:00:18.3
+    '
+
+    PATH="$1"
+    PCI_ID=${PATH%/hwmon/*}
+    PCI_ID=${PCI_ID##*/}
+    printf "%s" "$PCI_ID"
+}
+
+_get_hwmon() {
+    : '
+    Take as input a driver name and return the hwmon path(s) associated with it.
+    e.g. k10temp -> /sys/class/hwmon/hwmon4/
+    Input:
+        $1 -> DEVICE_SELECTED (e.g. k10temp, amdgpu)
+        $2 -> OPTIONAL PCI ID to filter results (e.g. 0000:00:18.3)
+    Output:
+        hwmon path if found, empty string otherwise
+    '
+
+    DEVICE_PATH=""
+    DEVICE_REQUESTED=
+
+    case "$1" in
+        "$DEVICE_CPU") DEVICE_REQUESTED=$DEVICE_CPU
+        ;;
+        "$DEVICE_GPU") DEVICE_REQUESTED=$DEVICE_GPU
+        ;;
+        *)
+            # Selected device is not supported in _get_hwmon
+            printf ""
+            return 1
+        ;;
+    esac
+
+    while read -r DEVICE; do
+        
+        # Get the device name and compare
+        CURRENT_DEVICE_PATH="$HWMON$DEVICE/"
+        CURRENT_DEVICE_NAME=$(cat "${CURRENT_DEVICE_PATH}name")
+
+        if [ "$CURRENT_DEVICE_NAME" != "$DEVICE_REQUESTED" ]; then
+            continue
+        fi
+
+        # If the name is matching, compare the PCI_ID if it is required by the function argument
+        if [ ! -z "$2" ]; then
+            CURRENT_DEVICE_PATH_LINK=$(readlink -f "$CURRENT_DEVICE_PATH")
+            PCI_ID=$(_isolate_pci_id "$CURRENT_DEVICE_PATH_LINK")
+            if [ "$PCI_ID" != "$2" ]; then
+                continue
+            fi
+        fi
+
+        # The device is the desired one, stop searching
+        DEVICE_PATH=$CURRENT_DEVICE_PATH
+        break
+    done < <(ls "$HWMON")
+
+    printf "$DEVICE_PATH"
+    return 1
+}
+
+cpu_usage() {
     
     TMP_STAT="${CUSTOM_WAYBAR_TMP}proc_stat_prev"
 
@@ -129,12 +203,33 @@ cpu() {
         '{text: $text, tooltip: $tooltip}'
     )
 }
+
+cpu_temperature() {
+    
+    HWMON_CPU_PATH=$(_get_hwmon "$DEVICE_CPU")
+    
+    CPU_TEMP=$(cat ${HWMON_CPU_PATH}temp3_input)
+    ((CPU_TEMP=CPU_TEMP/1000))
+    
+    TEXT=$(printf "%3d°C" "$CPU_TEMP")
+    TOOLTIP="Current temperature at ${CPU_TEMP}°C"
+    TOOLTIP="$TOOLTIP\nCritical temperature if temp > 95°C"
+
+    # Return value to waybar
+    echo $(jq -Rnc \
+        --arg text "$TEXT" \
+        --arg tooltip "$TOOLTIP" \
+        '{text: $text, tooltip: $tooltip}'
+    )
+}
 gpu() {
     echo "WIP"
 }
 
 case "$1" in
-    "cpu") cpu
+    "cpu-usage") cpu_usage
+    ;;
+    "cpu-temperature") cpu_temperature
     ;;
     "gpu") gpu
     ;;
