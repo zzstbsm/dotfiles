@@ -14,6 +14,7 @@ window#waybar {
 #custom-archicon,
 #clock,
 #cpu,
+#custom-cpu,
 #temperature,
 #memory,
 #image.spotify-art,
@@ -34,6 +35,7 @@ window#waybar {
 /* Separation to the left */
 #custom-archicon,
 #cpu,
+#custom-cpu,
 #memory,
 #custom-spotify,
 #cava,

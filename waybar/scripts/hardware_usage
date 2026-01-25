@@ -1,0 +1,143 @@
+#!/bin/bash
+
+HWMON_CPU="/sys/class/hwmon/hwmon2"     # amdgpu
+HWMON_GPU="/sys/class/hwmon/hwmon4"     # k10temp
+
+CUSTOM_WAYBAR_TMP="/tmp/waybar"
+mkdir -p "$CUSTOM_WAYBAR_TMP"
+
+ICON_LEVEL=( "▁" "▂" "▃" "▄" "▅" "▆" "▇" "█" )
+
+cpu() {
+    
+    TMP_STAT="${CUSTOM_WAYBAR_TMP}proc_stat_prev"
+
+    # CURRENT_STAT=$(grep -w -E "^cpu[0-9]{,2}" "/proc/stat")
+    # CPU_COUNT=$(printf "$CURRENT_STAT\n" | wc -l)
+    CURRENT_STAT=()
+    STAT_LINES_NUMBER=0    # This will be Number of CPU + 1 (i.e. average over all cores)
+    while read -r LINE; do
+        CURRENT_STAT+=("$LINE")
+        ((STAT_LINES_NUMBER++))
+    done < <(grep -w -E "^cpu[0-9]{,2}" "/proc/stat")
+
+    ### Doc columns meaning
+    # 01. cpu_name
+    # 02. user: time in user mode
+    # 03. nice:  time in niced processes (lower priority)
+    # 04. system: time in kernel mode
+    # 05. idle: time in idle mode
+    # 06. iowait: time spent waiting for io to complete
+    # 07. irq: time spent services hardware interrupts
+    # 08. softirq: time spent servicing software interrupts
+    # 09. steal: time taken by hypervisor
+    # 10. guest: time spent running guest OS (time included in `user`)
+    # 11. guest_nice: time spent running niced guest OS (time included in `nice`)
+    ### 
+
+    # If the temp file does not exist, dump the statistics and exit
+    if [ ! -f "$TMP_STAT" ]; then
+        echo -e "$CURRENT_STAT" > $TMP_STAT
+        exit 0
+    fi
+
+    # Load Previous statistics iteration
+    PREC_STAT=()
+    while read -r LINE; do
+        PREC_STAT+=("$LINE")
+    done < "$TMP_STAT"
+
+    # Perform computation logic
+    ARR_NAME=()
+    ARR_USAGE=()
+    ARR_LEVEL=()
+    ARR_ICON=()
+    for ((i=0 ; i < $STAT_LINES_NUMBER ; i++)); do
+
+        CPU_NAME=$(printf "%s\n" "${CURRENT_STAT[i]}" | awk '{print $1}')
+
+        # Current state
+        CURR_USER=$(printf "%s\n" "${CURRENT_STAT[i]}" | awk '{print $2}')
+        CURR_NICE=$(printf "%s\n" "${CURRENT_STAT[i]}" | awk '{print $3}')
+        CURR_SYS=$(printf "%s\n" "${CURRENT_STAT[i]}" | awk '{print $4}')
+        CURR_IDLE=$(printf "%s\n" "${CURRENT_STAT[i]}" | awk '{print $5}')
+        CURR_IOWAIT=$(printf "%s\n" "${CURRENT_STAT[i]}" | awk '{print $6}')
+        CURR_IRQ=$(printf "%s\n" "${CURRENT_STAT[i]}" | awk '{print $7}')
+        CURR_SOFTIRQ=$(printf "%s\n" "${CURRENT_STAT[i]}" | awk '{print $8}')
+        CURR_STEAL=$(printf "%s\n" "${CURRENT_STAT[i]}" | awk '{print $9}')
+        ((CURR_BUSY_JIFFIES=CURR_USER+CURR_NICE+CURR_SYS+CURR_IRQ+CURR_SOFTIRQ+CURR_STEAL))
+        ((CURR_TOTAL_JIFFIES=CURR_BUSY_JIFFIES+CURR_IDLE+CURR_IOWAIT))
+
+
+        # Previous state
+        PREV_USER=$(printf "%s\n" "${PREC_STAT[i]}" | awk '{print $2}')
+        PREV_NICE=$(printf "%s\n" "${PREC_STAT[i]}" | awk '{print $3}')
+        PREV_SYS=$(printf "%s\n" "${PREC_STAT[i]}" | awk '{print $4}')
+        PREV_IDLE=$(printf "%s\n" "${PREC_STAT[i]}" | awk '{print $5}')
+        PREV_IOWAIT=$(printf "%s\n" "${PREC_STAT[i]}" | awk '{print $6}')
+        PREV_IRQ=$(printf "%s\n" "${PREC_STAT[i]}" | awk '{print $7}')
+        PREV_SOFTIRQ=$(printf "%s\n" "${PREC_STAT[i]}" | awk '{print $8}')
+        PREV_STEAL=$(printf "%s\n" "${PREC_STAT[i]}" | awk '{print $9}')
+        ((PREV_BUSY_JIFFIES=PREV_USER+PREV_NICE+PREV_SYS+PREV_IRQ+PREV_SOFTIRQ+PREV_STEAL))
+        ((PREV_TOTAL_JIFFIES=PREV_BUSY_JIFFIES+PREV_IDLE+PREV_IOWAIT))
+
+        ((DELTA_BUSY = CURR_BUSY_JIFFIES - PREV_BUSY_JIFFIES))
+        ((DELTA_TOTAL = CURR_TOTAL_JIFFIES - PREV_TOTAL_JIFFIES))
+
+        # The CPU usage will be in percentage and the floor of the result value
+        ((CPU_USAGE = DELTA_BUSY * 100 / DELTA_TOTAL))
+
+        # printf "CURR    %d %d\n" "$CURR_BUSY_JIFFIES" "$PREV_BUSY_JIFFIES"
+        # printf "PREV    %d %d\n" "$CURR_TOTAL_JIFFIES" "$PREV_TOTAL_JIFFIES"
+        # printf "DELTA   %d %d\n" "$DELTA_BUSY" "$DELTA_TOTAL"
+        # printf "%s %d%%\n" "$CPU_NAME" "$CPU_USAGE"
+
+
+        # Divided by 101 to avoid having level 8 at 100% of CPU
+        # Technically it should be divided by 100
+        ((LEVEL = ARR_USAGE[0] * 8 / 101))  
+
+        ARR_NAME+=("$CPU_NAME")
+        ARR_USAGE+=( $CPU_USAGE )
+        ARR_LEVEL+=( $LEVEL )
+
+        # Select the correct icon given the value of ARR_LEVEL with
+        #   ICON_LEVEL[${ARR_LEVEL[0]}]}
+        ARR_ICON+=( ${ICON_LEVEL[$LEVEL]} )
+    done
+
+    # Save current stat for next iteration
+    printf "%s\n" "${CURRENT_STAT[@]}" > $TMP_STAT
+
+    # Format text
+    TEXT="${ARR_ICON[0]} ${ARR_USAGE[0]}%"
+
+    # Format tooltip
+    for ((i=0 ; i < $STAT_LINES_NUMBER ; i++)); do
+        TOOLTIP="$TOOLTIP$(
+            printf "%s %-20s : %3d%%\r" \
+                "${ARR_ICON[i]}" \
+                "${ARR_NAME[i]}" \
+                "${ARR_USAGE[i]}" \
+        )"
+    done
+
+    # Return value to waybar
+    echo $(jq -Rnc \
+        --arg text "$TEXT" \
+        --arg tooltip "$TOOLTIP" \
+        '{text: $text, tooltip: $tooltip}'
+    )
+}
+gpu() {
+    echo "WIP"
+}
+
+case "$1" in
+    "cpu") cpu
+    ;;
+    "gpu") gpu
+    ;;
+    *) echo ""
+    ;;
+esac
