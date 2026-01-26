@@ -7,6 +7,7 @@ HWMON="/sys/class/hwmon/"
 
 # https://docs.kernel.org/6.0/hwmon/k10temp.html
 DEVICE_CPU="k10temp"
+# https://docs.kernel.org/gpu/amdgpu/thermal.html
 DEVICE_GPU="amdgpu"
 
 CUSTOM_WAYBAR_TMP="/tmp/waybar/"
@@ -19,12 +20,13 @@ _isolate_pci_id () {
     : '
     Take as input a hwmon path and return the PCI ID of the device.
     e.g. /sys/class/hwmon/hwmon4/device/pci0000:00/0000:00:18.3/hwmon/hwmon4
-         -> 0000:00:18.3
+         -> 00:18.3
     '
 
-    PATH="$1"
-    PCI_ID=${PATH%/hwmon/*}
+    PCI_HWMON_PATH="$1"
+    PCI_ID=${PCI_HWMON_PATH%/hwmon/*}
     PCI_ID=${PCI_ID##*/}
+    PCI_ID=${PCI_ID#0000:}
     printf "%s" "$PCI_ID"
 }
 
@@ -222,8 +224,32 @@ cpu_temperature() {
         '{text: $text, tooltip: $tooltip}'
     )
 }
-gpu() {
-    echo "WIP"
+
+gpu_temperature() {
+
+    PCI_SLOT=$(
+        awk '{print $1}' \
+            <(grep -i -e "VGA.*Radeon" <(lspci))
+    )
+
+    HWMON_GPU_PATH=$(_get_hwmon "$DEVICE_GPU" "$PCI_SLOT")
+    
+    GPU_DIE_TEMP=$(cat ${HWMON_GPU_PATH}temp1_input)
+    GPU_CRIT_TEMP=$(cat ${HWMON_GPU_PATH}temp1_crit)
+
+    # Convertion to degrees
+    ((GPU_DIE_TEMP=GPU_DIE_TEMP/1000))
+    ((GPU_CRIT_TEMP=GPU_CRIT_TEMP/1000))
+    
+    TEXT=$(printf "GPU %3d°C" "$GPU_DIE_TEMP")
+    TOOLTIP=$(printf "Current temperature at ${GPU_DIE_TEMP}°C\rCritical temperature if temp > ${GPU_CRIT_TEMP}°C")
+
+    # Return value to waybar
+    echo $(jq -Rnc \
+        --arg text "$TEXT" \
+        --arg tooltip "$TOOLTIP" \
+        '{text: $text, tooltip: $tooltip}'
+    )
 }
 
 case "$1" in
@@ -231,7 +257,7 @@ case "$1" in
     ;;
     "cpu-temperature") cpu_temperature
     ;;
-    "gpu") gpu
+    "gpu-temperature") gpu_temperature
     ;;
     *) echo ""
     ;;

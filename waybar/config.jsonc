@@ -12,9 +12,9 @@
     "custom/archicon",
     "clock",
     "custom/cpu",
-    "custom/temperature",
-    "temperature",
-    "memory"
+    "custom/temperature-cpu",
+    "memory",
+    "custom/temperature-gpu",
   ],
 
   "modules-center": [
@@ -48,7 +48,7 @@
     "tooltip": true,
     "format": "{text} ",
   },
-  "custom/temperature": {
+  "custom/temperature-cpu": {
     "exec": "$HOME/.config/waybar/scripts/hardware_usage cpu-temperature",
     "return-type": "json",
     "interval": 1,
@@ -59,6 +59,13 @@
     "format": "{used}/{total} GB ",
     "tooltip": true,
     "tooltip-format": "RAM Usage: {used} / {total} ({percentage}%)"
+  },
+  "custom/temperature-gpu": {
+    "exec": "$HOME/.config/waybar/scripts/hardware_usage gpu-temperature",
+    "return-type": "json",
+    "interval": 1,
+    "tooltip": true,
+    "format": "{text} ",
   },
 
   /* -- Modules on the right --*/
