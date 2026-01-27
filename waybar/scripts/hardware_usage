@@ -1,8 +1,5 @@
 #!/bin/bash
 
-HWMON_GPU="/sys/class/hwmon/hwmon2"     # amdgpu
-HWMON_CPU="/sys/class/hwmon/hwmon4"     # k10temp
-
 HWMON="/sys/class/hwmon/"
 
 # https://docs.kernel.org/6.0/hwmon/k10temp.html
@@ -214,8 +211,7 @@ cpu_temperature() {
     ((CPU_TEMP=CPU_TEMP/1000))
     
     TEXT=$(printf "%3d°C" "$CPU_TEMP")
-    TOOLTIP="Current temperature at ${CPU_TEMP}°C"
-    TOOLTIP="$TOOLTIP\nCritical temperature if temp > 95°C"
+    TOOLTIP=$(printf "Current temperature at ${CPU_TEMP}°C\nCritical temperature if temp > 95°C")
 
     # Return value to waybar
     echo $(jq -Rnc \
