@@ -18,6 +18,7 @@ window#waybar {
 #custom-temperature-cpu,
 #custom-temperature-gpu,
 #memory,
+#custom-storage,
 #image.spotify-art,
 #custom-spotify,
 #cava,
@@ -39,6 +40,7 @@ window#waybar {
 #custom-cpu,
 #memory,
 #custom-temperature-gpu,
+#custom-storage,
 #custom-spotify,
 #cava,
 #privacy {
@@ -53,6 +55,7 @@ window#waybar {
 #memory,
 #custom-temperature-cpu,
 #custom-temperature-gpu,
+#custom-storage,
 #image.spotify-art,
 #pulseaudio,
 #privacy {

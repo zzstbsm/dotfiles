@@ -9,15 +9,16 @@
 
   /* === Modules Order === */
   "modules-left": [
-    "custom/archicon",
-    "clock",
     "custom/cpu",
     "custom/temperature-cpu",
     "memory",
     "custom/temperature-gpu",
+    "custom/storage",
   ],
 
   "modules-center": [
+    "custom/archicon",
+    "clock",
   ],
 
   "modules-right": [
@@ -66,6 +67,16 @@
     "interval": 1,
     "tooltip": true,
     "format": "{text} ",
+  },
+  "custom/storage": {
+    "exec": "$HOME/.config/waybar/scripts/storage show",
+    "return-type": "json",
+    "interval": 1,
+    "tooltip": true,
+    "format": "{text}",
+    "on-click": "$HOME/.config/waybar/scripts/storage left-click",
+    "on-click-middle": "$HOME/.config/waybar/scripts/storage middle-click",
+    "on-click-right": "$HOME/.config/waybar/scripts/storage right-click",
   },
 
   /* -- Modules on the right --*/

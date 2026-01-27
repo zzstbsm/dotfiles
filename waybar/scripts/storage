@@ -1,0 +1,92 @@
+#!/bin/bash
+
+CUSTOM_WAYBAR_TMP="/tmp/waybar/"
+mkdir -p "$CUSTOM_WAYBAR_TMP"
+
+TMP_CURRENT_DISK_FILE="${CUSTOM_WAYBAR_TMP}current_disk_info"
+
+DISKS=("/" "/home" "/mnt/storage")
+ICONS=("󰣇 " " " "󰋊 ")
+NUMBER_OF_DISKS=${#DISKS[@]}
+
+# Initialize the file if it does not exist
+# - CURRENT_DISK -> Index of the disk
+# - FORMAT  -> 0 if space remaining
+#           -> 1 if percentage
+if [ ! -f "$TMP_CURRENT_DISK_FILE" ]; then
+    CURRENT_DISK="1"
+    FORMAT="0"
+    printf "%d %d" "$CURRENT_DISK" "$FORMAT" > "$TMP_CURRENT_DISK_FILE"
+else
+    read CURRENT_DISK FORMAT < "$TMP_CURRENT_DISK_FILE"
+fi
+
+show() {
+
+    CURRENT_DISK_PATH=${DISKS[$CURRENT_DISK]}
+    CURRENT_ICON=${ICONS[$CURRENT_DISK]}
+
+    read SIZE USED AVALAIABLE PERCENTAGE_USED < <(df -H "$CURRENT_DISK_PATH" | awk 'NR==2 {print $2 " " $3 " " $4 " " $5}')
+
+    case "$FORMAT" in
+        # Space remaining
+        "0") 
+            TEXT=$(
+                printf "%s/%s | %s %s" \
+                    "$USED" "$SIZE" \
+                    "$CURRENT_ICON" "$CURRENT_DISK_PATH"
+            )
+        ;;
+        # Percentage
+        *)
+            TEXT=$(
+                printf "%s | %s %s" \
+                    "$PERCENTAGE_USED" \
+                    "$CURRENT_ICON" "$CURRENT_DISK_PATH"
+            )
+        ;;
+    esac
+
+    TOOLTIP=$(
+        printf "Used percentage: %s\nTotal space: %s\nFree space: %s\nUsed space: %s\n" \
+            "$PERCENTAGE_USED" \
+            "$SIZE" \
+            "$AVALAIABLE" \
+            "$USED" \
+    )
+
+    echo $(jq -Rnc \
+        --arg text "$TEXT" \
+        --arg tooltip "$TOOLTIP" \
+        '{text: $text, tooltip: $tooltip}'
+    )
+}
+
+on_left_click() {
+    (( CURRENT_DISK = ( CURRENT_DISK + 1 ) % NUMBER_OF_DISKS ))
+    printf "%d %d" "$CURRENT_DISK" "$FORMAT" > "$TMP_CURRENT_DISK_FILE"
+}
+
+on_middle_click() {
+    (( FORMAT = ( FORMAT + 1 ) % 2 ))
+    printf "%d %d" "$CURRENT_DISK" "$FORMAT" > "$TMP_CURRENT_DISK_FILE"
+}
+
+on_right_click() {
+    (( CURRENT_DISK = ( CURRENT_DISK - 1 ) % NUMBER_OF_DISKS ))
+    printf "%d %d" "$CURRENT_DISK" "$FORMAT" > "$TMP_CURRENT_DISK_FILE"
+}
+
+case "$1" in
+    "show") show
+    ;;
+    "left-click") on_left_click
+    ;;
+    "right-click") on_right_click
+    ;;
+    "middle-click") on_middle_click
+    ;;
+    *) echo "Storage"
+    ;;
+esac
+
