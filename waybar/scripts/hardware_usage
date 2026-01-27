@@ -255,6 +255,6 @@ case "$1" in
     ;;
     "gpu-temperature") gpu_temperature
     ;;
-    *) echo ""
+    *) echo "HWMON"
     ;;
 esac
