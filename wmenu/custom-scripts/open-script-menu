@@ -1,0 +1,23 @@
+#!/bin/bash
+
+PATH=$PATH:$HOME/.local/bin/scripts
+
+menu() {
+
+    ACTIONS_LIST=(
+        "󰎇 Audio track toggle"
+        "󰂯 Connect bluetooth device"
+    )
+
+    CHOICE=$(printf "%s\n" "${ACTIONS_LIST[@]}"  | wmenu -l 15 -p "Choose script")
+    case "$CHOICE" in
+        󰎇*) audio-toggle
+        ;;
+        󰂯*) connect-bt
+        ;;
+        *) exit 0
+        ;;
+    esac
+}
+
+menu

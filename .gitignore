@@ -9,6 +9,8 @@
 !starship.toml
 !tmux/
 !tmux/**/*
+!wmenu/
+!wmenu/**/*
 !waybar/
 !waybar/**/*
 

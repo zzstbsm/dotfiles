@@ -1,0 +1,59 @@
+#!/bin/bash
+
+# Check if the bluetooth controller is powered
+POWERED=$(bluetoothctl show | grep -w "Powered: yes")
+
+if [[ -z $POWERED ]]; then
+    # Device not powered
+    TURNON=$(echo -e 'Yes\nNo' | wmenu -i -p "Bluetooth device off, turn it on?")
+    case "$TURNON" in
+        "Yes")
+            notify-send -i network-bluetooth -t 5000 "Turning on bluetooth"
+            bluetoothctl power on
+            ;;
+        *)
+            notify-send -i network-bluetooth -t 5000 \
+                "Not turning on bluetooth" \
+                "You will be unable to connect the bluetooth devices"
+            exit 0;;
+    esac
+fi
+
+# Select device
+ICON_CONNECTED=""
+ICON_DISCONNECTED=""
+# Get connected device MAC addresses into an array
+CONNECTED_MACS=($(bluetoothctl devices Connected | awk '{print $2}'))
+# Build the menu list
+MENU=""
+while read -r _ MAC NAME; do
+    # Check if this MAC is in CONNECTED_MACS
+    if printf '%s\n' "${CONNECTED_MACS[@]}" | grep -q "$MAC"; then
+        ICON="$ICON_CONNECTED"
+    else
+        ICON="$ICON_DISCONNECTED"
+    fi
+
+    MENU+="${ICON} ${MAC} ${NAME}\n"
+done < <(bluetoothctl devices Paired)
+
+# Show menu and get selection
+SELECTED=$(echo -e "$MENU" | wmenu -p "Paired devices:")
+# Abort if the selection is deleted
+[[ -z $SELECTED ]] && exit 0
+
+# Get the mac address
+MACADDRESS=$(echo $SELECTED | awk '{print $2}')
+DEVICE_NAME=$(echo $SELECTED | awk '{$1=$2=""; print $0}')
+CONNECTED=$(bluetoothctl devices Connected | grep -w "$MACADDRESS")
+
+if [[ -n $CONNECTED ]]; then
+    notify-send -i info -t 5000 "$DEVICE_NAME disconnecting"
+    bluetoothctl disconnect $MACADDRESS
+    notify-send -i info -t 5000 "$DEVICE_NAME disconnected"
+    exit 0
+fi
+
+notify-send -i info -t 5000 "$DEVICE_NAME connecting"
+bluetoothctl connect $MACADDRESS
+notify-send -i info -t 5000 "$DEVICE_NAME connected"

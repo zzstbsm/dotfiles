@@ -1,0 +1,20 @@
+#!/bin/bash
+
+PLAYERS_LIST=$(playerctl --list-all)
+OPTIONS=
+
+# Associate the played content to each plaayer
+for PLAYER in $PLAYERS_LIST; do
+    TITLE=$(playerctl metadata --player=$PLAYER | grep -w "xesam:title" | awk '{$1=$2="";print $0}')
+    OPTIONS="$OPTIONS$PLAYER;$TITLE\n"
+done
+
+# Choose player. The content passed uses column in order to align the content of the rows
+CHOSEN_PLAYER=$(echo -e $OPTIONS | column -t -s ';' | wmenu -l 5 -p "Audio toggle")
+
+# Abort if no player is chosen
+[[ -z $CHOSEN_PLAYER ]] && exit 0
+
+# Play-pause the selected player
+PLAYER=$(echo -e $CHOSEN_PLAYER | awk '{print $1}')
+playerctl --player=$PLAYER play-pause
