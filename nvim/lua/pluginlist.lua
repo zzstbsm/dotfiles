@@ -331,5 +331,6 @@ return {
             { 'nvim-lua/plenary.nvim', branch = 'master' }
         },
         build = "make tiktoken",
-    }
+    },
+    'mikeoz32/nvim-agent',
 }
