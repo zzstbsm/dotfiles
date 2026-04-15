@@ -50,12 +50,14 @@ return {
         dependencies = {
             "nvim-tree/nvim-web-devicons"
         },
+        lazy = true,
+        event = "VeryLazy",
         config = function()
             require("lualine").setup(
-	    		{
+                {
                     icons_enabled = true,
                 }
-			)
+            )
         end,
     },
     -- Improve tab aestethics
@@ -65,6 +67,8 @@ return {
         dependencies = {
             "nvim-tree/nvim-web-devicons", -- optional dependency
         },
+        lazy = true,
+        event = "VeryLazy",
     },
     -- Set bar for code context
     {
@@ -75,6 +79,8 @@ return {
             "SmiteshP/nvim-navic",
             "nvim-tree/nvim-web-devicons", -- optional dependency
         },
+        lazy = true,
+        event = "VeryLazy",
     },
     -- Add scrollbar
     {
@@ -83,6 +89,9 @@ return {
             "lewis6991/gitsigns.nvim",      -- git signs on the scrollbar
             "kevinhwang91/nvim-hlslens",
         }
+        ,
+        lazy = true,
+        event = "VeryLazy",
     },
     -- Fold/unfold code
     {
@@ -90,6 +99,9 @@ return {
         dependencies = {
             "kevinhwang91/promise-async"
         }
+        ,
+        lazy = true,
+        event = "BufReadPost",
     },
     -- -- Dimming inactive code
     -- {
@@ -100,31 +112,67 @@ return {
     -- },
 
     -- Pretty notifications
-    "rcarriga/nvim-notify",
+    {
+        "rcarriga/nvim-notify",
+        lazy = true,
+        event = "VeryLazy",
+    },
 
-	-- LSP plugin configuration
-    "williamboman/mason.nvim",
-    "williamboman/mason-lspconfig.nvim",
-    "neovim/nvim-lspconfig",
+    -- LSP plugin configuration
+    {
+        "williamboman/mason.nvim",
+        lazy = true,
+        cmd = "Mason",
+    },
+    {
+        "williamboman/mason-lspconfig.nvim",
+        lazy = true,
+    },
+    {
+        "neovim/nvim-lspconfig",
+        lazy = true,
+        event = "LspAttach",
+    },
 
     -- Debugger Adapter Protocol
-    "mfussenegger/nvim-dap",
+    {
+        "mfussenegger/nvim-dap",
+        lazy = true,
+        cmd = {
+            "Dap",
+            "DapContinue",
+            "DapToggleBreakpoint",
+        },
+    },
     {
         "rcarriga/nvim-dap-ui",
+        lazy = true,
         dependencies = {
             "mfussenegger/nvim-dap",
-            "nvim-neotest/nvim-nio"
+            "nvim-neotest/nvim-nio",
         }
     },
 
     -- Linter
-    "mfussenegger/nvim-lint",
+    {
+        "mfussenegger/nvim-lint",
+        lazy = true,
+        event = "BufWritePre",
+    },
 
     -- Formatter
-    "mhartington/formatter.nvim",
+    {
+        "mhartington/formatter.nvim",
+        lazy = true,
+        event = "BufWritePre",
+    },
 
     -- Neovim namespace for code completion in the setup
-	"folke/neodev.nvim",
+    {
+        "folke/neodev.nvim",
+        lazy = true,
+        ft = "lua",
+    },
 	-- "simrat39/rust-tools.nvim",
     {
         'mrcjkb/rustaceanvim',
@@ -136,6 +184,8 @@ return {
     {
 		-- Nvim completion framework
         'hrsh7th/nvim-cmp',
+        lazy = true,
+        event = "InsertEnter",
         dependencies = {
             {
                 -- Code snippet support
@@ -163,32 +213,49 @@ return {
 	},
 
     -- Auto close tag for frontend dev
-    "windwp/nvim-ts-autotag",
+    {
+        "windwp/nvim-ts-autotag",
+        lazy = true,
+        event = "InsertEnter"
+    },
 
     -- Commenter
     {
         'numToStr/Comment.nvim',
-        lazy = false,
+        lazy = true,
+        keys = { "gc", "gcc" },
     },
 
     -- Indentation lines
     {
         "lukas-reineke/indent-blankline.nvim",
         main = "ibl",
+        lazy = true,
+        event = "BufReadPost",
     },
 
     -- Search hlslens
-    "kevinhwang91/nvim-hlslens",
+    {
+        "kevinhwang91/nvim-hlslens",
+        lazy = true, event =
+        "BufReadPost"
+    },
 
-	-- Debugger
-	"puremourning/vimspector",
+    -- Debugger
+    {
+        "puremourning/vimspector",
+        lazy = true,
+        cmd = "VimspectorToggle"
+    },
 
 	-- Telescope plugin
     {
 		'nvim-telescope/telescope.nvim',
 		tag = '0.1.6',
 		branch = '0.1.x',
-		dependencies = {
+ 		lazy = true,
+ 		cmd = "Telescope",
+ 		dependencies = {
             {
                 "isak102/telescope-git-file-history.nvim",
                 dependencies = {
@@ -213,24 +280,50 @@ return {
 	-- 'nvim-treesitter/playground',
 
     -- Harpoon
-	'theprimeagen/harpoon',
+    {
+        'theprimeagen/harpoon',
+        lazy = true,
+        event = "BufReadPost",
+    },
 
-	-- UndoTree
-	'mbbill/undotree',
+    -- UndoTree
+    {
+        'mbbill/undotree',
+        lazy = true,
+        cmd = "UndotreeToggle",
+    },
 
-	-- Git tool
-	'tpope/vim-fugitive',
+    -- Git tool
+    {
+        'tpope/vim-fugitive',
+        lazy = true,
+        cmd = "Git",
+    },
     {
         'rhysd/git-messenger.vim',
         init = function()
             vim.g.git_messenger_no_default_mappings = true
         end
     },
-    'f-person/git-blame.nvim',
-    'lewis6991/gitsigns.nvim',
-    'sindrets/diffview.nvim',
+    {
+        'f-person/git-blame.nvim',
+        lazy = true,
+        event = "BufReadPost",
+    },
+    {
+        'lewis6991/gitsigns.nvim',
+        lazy = true,
+        event = "BufReadPost",
+    },
+    {
+        'sindrets/diffview.nvim',
+        lazy = true,
+        cmd = "DiffviewOpen",
+    },
     {
         "NeogitOrg/neogit",
+        lazy = true,
+        cmd = "Neogit",
         dependencies = {
             "nvim-lua/plenary.nvim",         -- required
             "sindrets/diffview.nvim",        -- optional - Diff integration
@@ -241,9 +334,15 @@ return {
         end
     },
     -- Floating terminal
-    'voldikss/vim-floaterm',
+    {
+        'voldikss/vim-floaterm',
+        lazy = true,
+        cmd = "FloatermToggle",
+    },
     {
         "SmiteshP/nvim-navbuddy",
+        lazy = true,
+        cmd = "Navbuddy",
         dependencies = {
             "neovim/nvim-lspconfig",
             "SmiteshP/nvim-navic",
@@ -254,7 +353,11 @@ return {
     },
 
     -- Surround strings with markers
-    'tpope/vim-surround',
+    {
+        'tpope/vim-surround',
+        lazy = true,
+        event = "VeryLazy",
+    },
 
     -- Autoclose brackets
     {
@@ -285,6 +388,7 @@ return {
     -- Markdown preview
     {
         "iamcco/markdown-preview.nvim",
+        lazy = true,
         cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
         ft = { "markdown" },
         build = function() vim.fn["mkdp#util#install"]() end,
@@ -292,7 +396,10 @@ return {
     -- Rendering Markdown in nvim
     {
         'MeanderingProgrammer/render-markdown.nvim',
-        dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' },
+        dependencies = {
+            'nvim-treesitter/nvim-treesitter',
+            'nvim-tree/nvim-web-devicons',
+        },
     },
 
     -- Live server for frontend developement
