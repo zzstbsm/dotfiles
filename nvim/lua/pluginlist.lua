@@ -204,8 +204,13 @@ return {
     },
 
 	-- Treesitter: Highlighting
-    'nvim-treesitter/nvim-treesitter',
-	'nvim-treesitter/playground',
+    {
+        'nvim-treesitter/nvim-treesitter',
+        lazy = false,
+        branch = 'main',
+        build = ':TSUpdate'
+    },
+	-- 'nvim-treesitter/playground',
 
     -- Harpoon
 	'theprimeagen/harpoon',
