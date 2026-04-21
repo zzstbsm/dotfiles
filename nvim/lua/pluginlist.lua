@@ -251,8 +251,8 @@ return {
 	-- Telescope plugin
     {
 		'nvim-telescope/telescope.nvim',
-		tag = '0.1.6',
-		branch = '0.1.x',
+		tag = 'v0.2.2',
+		branch = 'master',
  		lazy = true,
  		cmd = "Telescope",
  		dependencies = {
