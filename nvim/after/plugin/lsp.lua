@@ -4,6 +4,7 @@ capabilities.textDocument.foldingRange = {
     dynamicRegistration = false,
     lineFoldingOnly = true,
 }
+capabilities = require('blink.cmp').get_lsp_capabilities(capabilities)
 
 local navic = require('nvim-navic')
 local navbuddy = require('nvim-navbuddy')
