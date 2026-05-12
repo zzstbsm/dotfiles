@@ -10,7 +10,8 @@ local keymap = {
     -- Select the [p]revious item
     ['<C-p>'] = { 'select_prev', 'fallback' },
 
-    -- Scroll the documentation window [b]ack / [f]orward
+    -- Show and hide documentation
+    ['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation' },    -- Scroll the documentation window [b]ack / [f]orward
     ['<C-b>'] = { 'scroll_documentation_up' },
     ['<C-f>'] = { 'scroll_documentation_down' },
     ['<M-n>'] = {
@@ -24,7 +25,7 @@ local keymap = {
     --  This will auto-import if your LSP supports it.
     --  This will expand snippets if the LSP sent a snippet.
     ['<C-y>'] = { 'accept' },
-    ['<CR>'] = { 'accept' },
+    ['<CR>'] = { 'accept', 'fallback' },
 
     -- Tab to navigate between the 
     ['<Tab>'] = { 'select_next', 'fallback'},
