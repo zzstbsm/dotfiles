@@ -43,6 +43,8 @@ local sources = {
     }
 }
 
+--- @module 'blink.cmp'
+--- @class blink.cmp.Fuzzy
 local fuzzy = {
     implementation = 'prefer_rust_with_warning'
 }
