@@ -181,6 +181,55 @@ return {
     },
 
 	-- Code completion
+    -- {
+	-- 	-- Nvim completion framework
+    --     'hrsh7th/nvim-cmp',
+    --     lazy = true,
+    --     event = "InsertEnter",
+    --     dependencies = {
+    --         {
+    --             -- Code snippet support
+    --             'L3MON4D3/LuaSnip',
+	--             run = "make install_jsregexp",
+    --             dependencies = {
+    --                 -- Snippet support for a variety of programming languages
+    --                 'rafamadriz/friendly-snippets',
+    --
+    --                 'nvim-treesitter/nvim-treesitter',
+    --             }
+    --         },
+    --         -- Snippet for configuration part
+    --         'saadparwaiz1/cmp_luasnip',
+    --
+	-- 		'hrsh7th/cmp-nvim-lua',
+	-- 		'hrsh7th/cmp-nvim-lsp-signature-help',
+	-- 		'hrsh7th/cmp-vsnip',
+	-- 		'hrsh7th/cmp-path',
+	-- 		'hrsh7th/cmp-buffer',
+	-- 		'hrsh7th/vim-vsnip',
+    --         -- Nvim completion source
+    --         'hrsh7th/cmp-nvim-lsp',
+	-- 	},
+	-- },
+
+                    'nvim-treesitter/nvim-treesitter',
+                }
+            },
+            -- Snippet for configuration part
+            'saadparwaiz1/cmp_luasnip',
+
+			'hrsh7th/cmp-nvim-lua',
+			'hrsh7th/cmp-nvim-lsp-signature-help',
+			'hrsh7th/cmp-vsnip',
+			'hrsh7th/cmp-path',
+			'hrsh7th/cmp-buffer',
+			'hrsh7th/vim-vsnip',
+            -- Nvim completion source
+            'hrsh7th/cmp-nvim-lsp',
+		},
+	},
+
+    -- Auto close tag for frontend dev
     {
 		-- Nvim completion framework
         'hrsh7th/nvim-cmp',
@@ -195,11 +244,11 @@ return {
                     -- Snippet support for a variety of programming languages
                     'rafamadriz/friendly-snippets',
 
-                    'nvim-treesitter/nvim-treesitter',
-                }
-            },
-            -- Snippet for configuration part
-            'saadparwaiz1/cmp_luasnip',
+    --                 'nvim-treesitter/nvim-treesitter',
+    --             }
+    --         },
+    --         -- Snippet for configuration part
+    --         'saadparwaiz1/cmp_luasnip',
 
 			'hrsh7th/cmp-nvim-lua',
 			'hrsh7th/cmp-nvim-lsp-signature-help',
