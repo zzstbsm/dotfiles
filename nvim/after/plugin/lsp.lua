@@ -9,49 +9,54 @@ local navic = require('nvim-navic')
 local navbuddy = require('nvim-navbuddy')
 local telescope = require('telescope.builtin')
 
-local on_attach = function(client, bufnr)
+vim.api.nvim_create_autocmd("LspAttach", {
+    callback = function(event)
 
-    local bufmap = function(keys, func, desc)
-        vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
-    end
+        local client = vim.lsp.get_client_by_id(event.data.client_id)
+        local bufnr = event.buf
 
-    if client.server_capabilities.documentSymbolProvider then
-        -- On attach navic
-        navic.attach(client, bufnr)
+        local bufmap = function(keys, func, desc)
+            vim.keymap.set("n", keys, func, {
+                buffer = bufnr,
+                desc = desc,
+            })
+        end
 
-        -- On attach navbuddy
-        navbuddy.attach(client, bufnr)
-    end
+        if client and client:supports_method("textDocument/documentSymbol") then
+            navic.attach(client, bufnr)
+            navbuddy.attach(client, bufnr)
+        end
 
-    bufmap('<C-n>', navbuddy.open, 'Open Navbuddy')
+        bufmap('<C-n>', navbuddy.open, 'Open Navbuddy')
 
 
-    bufmap('<leader>r', vim.lsp.buf.rename)
-    bufmap('<leader>A', vim.lsp.buf.code_action)
+        bufmap('<leader>r', vim.lsp.buf.rename)
+        bufmap('<leader>A', vim.lsp.buf.code_action)
 
-    bufmap('gd', vim.lsp.buf.definition, "Go to symbol definition")
-    bufmap('gD', vim.lsp.buf.declaration, "Go to symbol declaration")
-    bufmap('gI', vim.lsp.buf.implementation, "Open window with symbol implementation")
-    bufmap('gR', vim.lsp.buf.rename, "Rename the symbol in the code")
-    bufmap('<leader>D', vim.lsp.buf.type_definition)
+        bufmap('gd', vim.lsp.buf.definition, "Go to symbol definition")
+        bufmap('gD', vim.lsp.buf.declaration, "Go to symbol declaration")
+        bufmap('gI', vim.lsp.buf.implementation, "Open window with symbol implementation")
+        bufmap('gR', vim.lsp.buf.rename, "Rename the symbol in the code")
+        bufmap('<leader>D', vim.lsp.buf.type_definition)
 
-    bufmap('gr', telescope.lsp_references)
-    bufmap('<leader>s', telescope.lsp_document_symbols)
-    bufmap('<leader>S', telescope.lsp_dynamic_workspace_symbols)
+        bufmap('gr', telescope.lsp_references)
+        bufmap('<leader>s', telescope.lsp_document_symbols)
+        bufmap('<leader>S', telescope.lsp_dynamic_workspace_symbols)
 
-    bufmap(
-        '<leader>d',
-        function()
-            vim.diagnostic.open_float({ scope = "cursor" })
-        end,
-        "Open diagnostic window"
-    )
-    bufmap('K', vim.lsp.buf.hover, "Hover on the symbol")
+        bufmap(
+            '<leader>d',
+            function()
+                vim.diagnostic.open_float({ scope = "cursor" })
+            end,
+            "Open diagnostic window"
+        )
+        bufmap('K', vim.lsp.buf.hover, "Hover on the symbol")
 
-    vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
-        vim.lsp.buf.format()
-    end, {})
-end
+        vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
+            vim.lsp.buf.format()
+        end, {})
+    end,
+})
 
 require('mason').setup()
 
@@ -59,7 +64,7 @@ require('mason-lspconfig').setup({
     ensure_installed = {
         'clangd',                               -- C/C++
         'cmake',                                -- CMake
-        'cssls',                                -- CSS
+        -- 'cssls',                                -- CSS
         'dockerls',                             -- Docker
         'docker_compose_language_service',      -- Docker compose
         'fortls',                               -- Fortran
@@ -69,12 +74,12 @@ require('mason-lspconfig').setup({
         'helm_ls',                              -- Helm
         'kotlin_language_server',               -- Kotlin
         'lua_ls',                               -- Lua
-        'prosemd_lsp',                          -- Markdown
+        'marksman',                          -- Markdown
         'pylsp',                                -- Python
-        -- 'pyright',                              -- Python
         'rust_analyzer',                        -- rust
         'taplo',                                -- TOML
         'texlab',                               -- LaTeX
+        'ts_ls',                                -- Javascript, Typescript
         'yamlls',                               -- YAML
 
     },
@@ -82,12 +87,10 @@ require('mason-lspconfig').setup({
 })
 
 vim.lsp.config('*', {
-    on_attach = on_attach,
     capabilities = capabilities,
 })
 
 vim.lsp.config('lua_ls', {
-    on_attach = on_attach,
     capabilities = capabilities,
 	settings = {
 	    Lua = {
@@ -95,6 +98,7 @@ vim.lsp.config('lua_ls', {
 	        telemetry = { enable = false },
             diagnostics = {
                 disable = { "missing-fields" },
+                globals = { "vim" }
             }
 	    },
 	}
@@ -145,4 +149,16 @@ vim.lsp.config('yamlls', {
         }
     },
     capabilities = capabilities,
+})
+
+vim.lsp.enable({
+    'lua_ls',
+    'pylsp',
+    'rust_analyzer',
+    'marksman',
+    'clangd',
+    'gopls',
+    'html',
+    'cssls',
+    'ts_ls',
 })
