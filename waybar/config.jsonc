@@ -25,6 +25,7 @@
     "privacy",
     "custom/spotify",
     "image#spotify-art",
+    "custom/bluetooth",
     "pulseaudio"
   ],
 
@@ -99,6 +100,15 @@
       "standby": "󰓇",
     },
     "on-click": "$HOME/.config/waybar/scripts/spotify click"
+  },
+  "custom/bluetooth": {
+    "exec": "$HOME/.config/waybar/scripts/bluetooth show",
+    "return-type": "json",
+    "interval": 1,
+    "tooltip": true,
+    "format": "{text}",
+    "on-click": "$HOME/.config/waybar/scripts/bluetooth left-click",
+    "on-click-middle": "$HOME/.config/waybar/scripts/bluetooth middle-click"
   },
   "pulseaudio": {
     "format": "{icon} {volume}%",

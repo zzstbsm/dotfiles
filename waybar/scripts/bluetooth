@@ -1,0 +1,124 @@
+#!/bin/bash
+
+# # Variables in $HOME/.config/waybar/scripts/bluetooth.env
+# HEADPHONE_MAC_ADDR=
+# MOUSE_MAC_ADDR=
+
+source "$HOME/.config/waybar/scripts/bluetooth.env"
+CUSTOM_WAYBAR_TMP="/tmp/waybar"
+
+# Check if the bluetooth controller is powered
+POWERED=$(bluetoothctl show | grep -w "Powered: yes")
+
+HEADPHONE_CONNECTED=
+MOUSE_CONNECTED=
+
+ICON_BLUETOOTH="󰂯"
+ICON_BLUETOOTH_HEADPHONE="󰥰"
+ICON_BLUETOOTH_MOUSE="󰦋"
+
+_bluetooth_connected_status() {
+    : '
+    $1: MAC ADDRESS (if not present, returns nothing)
+    $2: ICON to display if the device is connected
+
+    Returns:
+        $ICON $PERCENTAGE - if the device is connected and the icon is passed
+        nothing - if the device is not connected
+    '
+
+    if [[ -z "$1" ]]; then
+        echo ""
+        return 1
+    fi
+
+    CONNECTED=$(bluetoothctl devices Connected | grep "$1")
+    ICON=""
+
+    if [[ -n "$2" ]]; then
+        ICON="$2"  # Space added to separate the icon from the percentage
+                    # Space not present if icon is not passed as argument
+    fi
+
+    # Device not connected
+    if [[ -z $CONNECTED ]]; then
+        echo ""
+        return 1
+    fi
+
+    # # The battery percentage will be of the pattern
+	# Battery Percentage: 0x32 (50)
+    BATTERY_PERCENTAGE="$(
+        bluetoothctl info "$1" | \
+            grep "Battery Percentage" | \
+            sed -n 's/.*(\([0-9]\+\)).*/\1/p'
+    )"
+    if [[ -n "$BATTERY_PERCENTAGE" ]]; then
+        echo "$ICON $BATTERY_PERCENTAGE%"
+    else
+        echo "$ICON"
+    fi
+    return 0
+}
+
+show() {
+
+    # If the controller is not powered, show only the icon
+    if [[ -z "$POWERED" ]]; then
+        echo $(jq -Rnc \
+            --arg text "$ICON_BLUETOOTH" \
+            --arg tooltip "Bluetooth off, click to activate it" \
+            '{text: $text, tooltip: $tooltip}'
+        )
+        exit 0
+    fi
+
+    TEXT=()
+
+    HEADPHONE_TEXT="$(_bluetooth_connected_status "$HEADPHONE_MAC_ADDR" "$ICON_BLUETOOTH_HEADPHONE")"
+    [[ -n "$HEADPHONE_TEXT" ]] && TEXT+=("$HEADPHONE_TEXT")
+
+    MOUSE_TEXT="$(_bluetooth_connected_status "$MOUSE_MAC_ADDR" "$ICON_BLUETOOTH_MOUSE")"
+    [[ -n "$MOUSE_TEXT" ]] && TEXT+=("$MOUSE_TEXT")
+
+
+    TEXT="$(IFS='•'; printf '%s' "${TEXT[*]}")"
+
+    echo $(jq -Rnc \
+        --arg text "$TEXT" \
+        --arg tooltip "$TOOLTIP" \
+        '{text: $text, tooltip: $tooltip}'
+    )
+}
+
+on_left_click() {
+
+    if [[ -z "$POWERED" ]]; then
+        notify-send -i network-bluetooth -t 5000 "Turning on bluetooth"
+        bluetoothctl power on
+        exit 0
+    fi
+
+}
+
+on_middle_click() {
+
+    if [[ -n "$POWERED" ]]; then
+        notify-send -i network-bluetooth -t 5000 "Turning off bluetooth"
+        bluetoothctl power off
+        exit 0
+    fi
+
+}
+
+case "$1" in
+    "show") show
+    ;;
+    "left-click") on_left_click
+    ;;
+    "middle-click") on_middle_click
+    ;;
+    *) echo ""
+    ;;
+esac
+

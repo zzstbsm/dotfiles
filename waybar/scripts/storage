@@ -32,7 +32,7 @@ show() {
         # Space remaining
         "0") 
             TEXT=$(
-                printf "%s/%s | %s %s" \
+                printf "%s/%s • %s %s" \
                     "$USED" "$SIZE" \
                     "$CURRENT_ICON" "$CURRENT_DISK_PATH"
             )
@@ -40,7 +40,7 @@ show() {
         # Percentage
         *)
             TEXT=$(
-                printf "%s | %s %s" \
+                printf "%s • %s %s" \
                     "$PERCENTAGE_USED" \
                     "$CURRENT_ICON" "$CURRENT_DISK_PATH"
             )

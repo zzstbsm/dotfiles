@@ -21,6 +21,7 @@ window#waybar {
 #custom-storage,
 #image.spotify-art,
 #custom-spotify,
+#custom-bluetooth,
 #cava,
 #pulseaudio,
 #privacy {
@@ -42,6 +43,7 @@ window#waybar {
 #custom-temperature-gpu,
 #custom-storage,
 #custom-spotify,
+#custom-bluetooth,
 #cava,
 #privacy {
   margin-left: 4px;
@@ -57,6 +59,7 @@ window#waybar {
 #custom-temperature-gpu,
 #custom-storage,
 #image.spotify-art,
+#custom-bluetooth,
 #pulseaudio,
 #privacy {
   margin-right: 4px;
