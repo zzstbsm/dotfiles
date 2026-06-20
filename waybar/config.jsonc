@@ -29,19 +29,6 @@
   ],
 
   /* -- Modules on the left --*/
-  "custom/archicon": {
-    "format": "",
-    "on-click": "$HOME/.local/bin/scripts/open-script-menu",
-    "tooltip": false
-  },
-  "clock": {
-    "timezone": "Europe/Rome",
-    "format": "{:%H:%M  %d %h %y}",
-    "tooltip-format": "{calendar}",
-    "calendar": {
-      "mode": "month"
-    }
-  },
   "custom/cpu": {
     "exec": "$HOME/.config/waybar/scripts/hardware_usage cpu-usage",
     "return-type": "json",
@@ -77,6 +64,21 @@
     "on-click": "$HOME/.config/waybar/scripts/storage left-click",
     "on-click-middle": "$HOME/.config/waybar/scripts/storage middle-click",
     "on-click-right": "$HOME/.config/waybar/scripts/storage right-click",
+  },
+
+  /* -- Modules on the center --*/
+  "custom/archicon": {
+    "format": "",
+    "on-click": "$HOME/.local/bin/scripts/open-script-menu",
+    "tooltip": false
+  },
+  "clock": {
+    "timezone": "Europe/Rome",
+    "format": "{:%H:%M  %d %h %y}",
+    "tooltip-format": "{calendar}",
+    "calendar": {
+      "mode": "month"
+    }
   },
 
   /* -- Modules on the right --*/
