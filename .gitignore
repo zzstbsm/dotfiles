@@ -11,6 +11,8 @@
 !tmux/**/*
 !wmenu/
 !wmenu/**/*
+!scripts/
+!scripts/**/*
 !waybar/
 !waybar/**/*
 

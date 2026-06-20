@@ -21,6 +21,7 @@ return {
         name = "catppuccin",
         priority = 1000
     },
+
     -- Nerdicons integration inside nvim
     {
         'glepnir/nerdicons.nvim',
@@ -29,12 +30,13 @@ return {
             require('nerdicons').setup({})
         end
     },
+
     -- Alpha nvim welcome dashboard
     {
         'goolord/alpha-nvim',
-        dependencies = {
-        },
+        dependencies = { 'nvim-tree/nvim-web-devicons' },
     },
+
 	-- Tree view
     {
     	'nvim-tree/nvim-tree.lua',
@@ -216,17 +218,6 @@ return {
         dependencies = { 'rafamadriz/friendly-snippets' },
 
         version = '1.*',
-
-        -- opts = {
-        --     keymap = { preset = 'default' },
-        --     appearance = {
-        --         nerd_font_variant = 'mono'
-        --     },
-        --     sources = {
-        --         default = { 'lsp', 'path', 'snippets', 'buffer' }
-        --     },
-        --     fuzzy = { implementation = 'prefer_rust_with_warning' },
-        -- },
         opts_extend = { 'sources.default' }
     },
 
@@ -444,9 +435,6 @@ return {
 
     -- VimBeGood Game
     'ThePrimeagen/vim-be-good',
-
-    -- Kubectl nvim
-    'Ramilito/kubectl.nvim',
 
     -- Copilot
     {
