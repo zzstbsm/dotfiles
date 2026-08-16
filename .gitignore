@@ -2,6 +2,8 @@
 
 !ghostty/
 !ghostty/**/*
+!hypr/
+!hypr/**/*
 !logiops/
 !logiops/**/*
 !nvim/
