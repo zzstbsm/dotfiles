@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PATH=$PATH:$HOME/.local/bin/scripts
+PATH=$PATH:$HOME/.config/wmenu/custom-scripts
 
 menu() {
 
