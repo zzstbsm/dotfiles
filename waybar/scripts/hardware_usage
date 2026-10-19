@@ -225,7 +225,7 @@ gpu_temperature() {
 
     PCI_SLOT=$(
         awk '{print $1}' \
-            <(grep -i -e "VGA.*Radeon" <(lspci))
+            <(grep -i -e "VGA.*Radeon.*RX" <(lspci))
     )
 
     HWMON_GPU_PATH=$(_get_hwmon "$DEVICE_GPU" "$PCI_SLOT")
